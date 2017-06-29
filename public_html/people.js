@@ -58,7 +58,6 @@ function clearNumericString(numStr, sep) {
 
 	if (sep) {
 		if (sep.char === ',') {
-//			cleared = cleared.replaceAt(sep.index, '.');
 			cleared = parseFloat(cleared.replace(/\D/g, ''));// fazer back position, verificar ultimo caractere separador para setar ponto lá
 		}
 	}
@@ -212,16 +211,50 @@ function ss(scriptPath, callback) {
 	} 
 }
 
+function romanToNumber(str) {  
+    var result = 0,
+        decimal = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1],
+        roman = ["M", "CM","D","CD","C", "XC", "L", "XL", "X","IX","V","IV","I"];
+    
+    for (var i = 0; i <= decimal.length; i++) {
+        while (str.indexOf(roman[i]) === 0) {
+            result += decimal[i];
+            str = str.replace(roman[i],'');
+        }
+    }
+    
+    return result;
+}
+
+function numberToRoman(num) {  
+    var result = '',
+        decimal = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1],
+        roman = ["M", "CM","D","CD","C", "XC", "L", "XL", "X","IX","V","IV","I"];
+  
+    for (var i = 0; i <= decimal.length; i++) {
+        while (num%decimal[i] < num) {     
+            result += roman[i];
+            num -= decimal[i];
+        }
+    }
+    
+    return result;
+}
+
+Number.prototype.toFixedDown = function(digits) {
+    var n = this - Math.pow(10, -digits)/2;
+    n += n / Math.pow(2, 53); 
+    return n.toFixed(digits);
+}
+
 /* TO-DO List */
 
 /*
 function blockKeys(userEvent) {}
 function blockClicks(userEvent) {}
-function romanToArabicNumber() {}
-function arabicToRomanNumber() {}
+function blockSelection(){}
 function hexEncode() {}
 function hexDecode() {}
 function uEncode() {}
-function uDecode() {}
-function toFixedDown() {}			
+function uDecode() {}		
 */
