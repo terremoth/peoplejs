@@ -18,13 +18,12 @@ String.prototype.indexes = function (find) {
 
 function toMoney(num, mil, dec, front, back) {
 
-	mil = (typeof mil === 'undefined') ? '.' : mil;
-	dec = (typeof dec === 'undefined') ? ',' : dec;
-	front = (typeof front === 'undefined') ? '' : front;
-	back = (typeof back === 'undefined') ? '' : back;
+	mil   = (typeof mil === 'undefined')   ? '.' : mil;
+	dec   = (typeof dec === 'undefined')   ? ',' : dec;
+	front = (typeof front === 'undefined') ? ''  : front;
+	back  = (typeof back === 'undefined')  ? ''  : back;
 
 	num = (typeof num === 'string') ? parseFloat(num) : num;
-//	num = (typeof num === 'string') ? clearNumericString(num) : num;
 
 	return front.toString() + num.toFixed(2).replace('.', dec).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + mil) + back.toString();
 }
@@ -96,7 +95,7 @@ function checkAll(e) {
 	input.setAttribute('onclick', 'DesChekALL(event)');
 }
 
-function desChekALL(e) {
+function unChekALL(e) {
 
 	try {var element = e.target;} catch (er) {}
 	try {var element = event.srcElement;} catch (er) {}
@@ -145,7 +144,7 @@ function pageBottom() {
 	window.scrollTo(0, document.body.scrollHeight);
 }
 
-function getAllUserFunc() {
+function getAllUserFunctions() {
 	return Object.keys(window).filter(function (x) {
 		return window[x] instanceof Function && !/\[native code\]/.test(window[x].toString());
 	});
@@ -200,6 +199,17 @@ function setFullScreen() {
 			|| doc.webkitRequestFullScreen
 			|| doc.mozRequestFullScreen;
 	rfs.call(doc);
+}
+
+function ss(scriptPath, callback) {
+	var scriptHead = document.createElement('script'); 
+	scriptHead.type = 'text/javascript';
+	scriptHead.src = scriptPath;
+	document.head.appendChild(scriptHead);
+    
+	scriptHead.onload = function() {
+		callback();
+	} 
 }
 
 /* TO-DO List */
