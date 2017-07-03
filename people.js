@@ -366,6 +366,12 @@ Array.prototype.trunc = function(n) {
     this.length = n;
 };
 
+function microtime() {
+    var s, now = (Date.now ? Date.now() : new Date().getTime()) / 1000;
+    s = now | 0;
+    return (Math.round((now - s) * 1000) / 1000) + ' ' + s;
+}
+
 function objToParams(obj){
   return "?" + Object
         .keys(obj)
