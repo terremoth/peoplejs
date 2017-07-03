@@ -18,10 +18,10 @@ String.prototype.indexes = function (find) {
 
 function toMoney(num, mil, dec, front, back) {
 
-	mil   = mil   || mil;
-	dec   = dec   || dec;
-	front = front || front;
-	back  = back  || back;
+	mil   = mil   || '.';
+	dec   = dec   || ',';
+	front = front || '';
+	back  = back  || '';
 
 	num = (typeof num === 'string') ? parseFloat(num) : num;
 
@@ -68,7 +68,7 @@ function clearNumericString(numStr, sep) {
 
 Array.prototype.randomItem = function() {
     return this[Math.floor(Math.random() * this.length)];
-}
+};
 
 function randomString(len) {
     var rdmString = "";
@@ -212,7 +212,7 @@ function ss(scriptPath, callback) {
     
 	scriptHead.onload = function() {
 		callback();
-	} 
+	};
 }
 
 function romanToNumber(str) {  
@@ -249,7 +249,7 @@ Number.prototype.toFixedDown = function(digits) {
     var n = this - Math.pow(10, -digits)/2;
     n += n / Math.pow(2, 53); 
     return n.toFixed(digits);
-}
+};
 
 function setCookie(cname, cvalue, time) {
     var d = new Date();
@@ -266,11 +266,11 @@ function getCookie(cname) {
     for(var i = 0; i < ca.length; i++) {
         var c = ca[i];
         
-        while (c.charAt(0) == ' ') {
+        while (c.charAt(0) === ' ') {
             c = c.substring(1);
         }
         
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) === 0) {
             return c.substring(name.length, c.length);
         }
     }
@@ -347,7 +347,7 @@ Array.prototype.shuffle = function() {
     this.sort(function() {  
         return Math.random() - 0.5;
     });
-}
+};
 
 function isNumber(n){
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -359,18 +359,18 @@ function isArray(obj){
 
 Array.prototype.empty = function() {
     this.length = 0;
-}
+};
 
 Array.prototype.trunc = function(n) {
     n = n || this.length;
     this.length = n;
-}
+};
 
 function objToParams(obj){
   return "?" + Object
         .keys(obj)
         .map(function(key){
-          return key+"="+obj[key]
+          return key+"="+obj[key];
         })
         .join("&");
 }
