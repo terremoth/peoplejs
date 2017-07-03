@@ -284,6 +284,87 @@ function deleteCookie(cname) {
 	return false;
 }
 
+function listCookies() {
+
+    var cookies = {};
+
+    if (document.cookie !== '') {
+        var split = document.cookie.split(';');
+        for (var i = 0; i < split.length; i++) {
+            var name_value = split[i].split("=");
+            name_value[0] = name_value[0].replace(/^ /, '');
+            cookies[decodeURIComponent(name_value[0])] = decodeURIComponent(name_value[1]);
+        }
+    }
+    
+    return cookies;
+}
+
+function windowSize() {
+    var w = window,
+        d = document,
+        e = d.documentElement,
+        g = d.getElementsByTagName('body')[0],
+        x = w.innerWidth || e.clientWidth || g.clientWidth,
+        y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    return {"width": x, "height": y};
+}
+
+function floatRandom(min, max) {
+   return Math.random() * (max - min) + min;
+}
+
+function intRandom(min, max) {
+   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function range(a, b, step){
+    var A = [];
+    if (typeof a === 'number') {
+        A[0]= a;
+        step = step || 1;
+        while (a + step <= b) {
+            A[A.length]= a+= step;
+        }
+    } else {
+        var s = 'abcdefghijklmnopqrstuvwxyz';
+        if(a === a.toUpperCase()) {
+            b = b.toUpperCase();
+            s = s.toUpperCase();
+        }
+
+        s= s.substring(s.indexOf(a), s.indexOf(b)+ 1);
+        A= s.split('');        
+    }
+    return A;
+}
+
+Array.prototype.shuffle = function() {
+    var array = this;
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
+
+function objToParams(obj){
+  return "?" + Object
+        .keys(obj)
+        .map(function(key){
+          return key+"="+obj[key]
+        })
+        .join("&");
+}
+
+
+
 /* TO-DO List */
 
 /*
