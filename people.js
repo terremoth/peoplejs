@@ -18,10 +18,10 @@ String.prototype.indexes = function (find) {
 
 function toMoney(num, mil, dec, front, back) {
 
-	mil   = (typeof mil === 'undefined')   ? '.' : mil;
-	dec   = (typeof dec === 'undefined')   ? ',' : dec;
-	front = (typeof front === 'undefined') ? ''  : front;
-	back  = (typeof back === 'undefined')  ? ''  : back;
+	mil   = mil   || mil;
+	dec   = dec   || dec;
+	front = front || front;
+	back  = back  || back;
 
 	num = (typeof num === 'string') ? parseFloat(num) : num;
 
@@ -66,20 +66,23 @@ function clearNumericString(numStr, sep) {
 	return cleared;
 }
 
+Array.prototype.randomItem = function() {
+    return this[Math.floor(Math.random() * this.length)];
+}
+
+function randomString(len) {
+    var rdmString = "";
+    for( ; rdmString.length < len; rdmString  += Math.random().toString(36).substr(2));
+    return rdmString.substr(0, len);
+}
+
 function objSize(obj) {
 	return Object.keys(obj).length;
 }
 
 function checkAll(e) {
 
-	try {
-		var element = e.target;
-	} catch (er) {
-	}
-	try {
-		var element = event.srcElement;
-	} catch (er) {
-	}
+	var element = e.target || event.srcElement;
 
 	if (element.checked) {
 		var arrayElements = document.getElementsByTagName('input');
@@ -90,6 +93,7 @@ function checkAll(e) {
 			}
 		}
 	}
+    
 	var input = document.getElementById('check');
 	input.setAttribute('onclick', 'DesChekALL(event)');
 }
@@ -340,18 +344,26 @@ function range(a, b, step){
 }
 
 Array.prototype.shuffle = function() {
-    var array = this;
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    this.sort(function() {  
+        return Math.random() - 0.5;
+    });
+}
 
-    while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
+function isNumber(n){
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
 
-    return array;
+function isArray(obj){
+    return Object.prototype.toString.call(obj) === '[object Array]' ;
+}
+
+Array.prototype.empty = function() {
+    this.length = 0;
+}
+
+Array.prototype.trunc = function(n) {
+    n = n || this.length;
+    this.length = n;
 }
 
 function objToParams(obj){
@@ -368,6 +380,7 @@ function objToParams(obj){
 /* TO-DO List */
 
 /*
+function autoInstanceParams() {}
 function blockKeys(userEvent) {}
 function blockClicks(userEvent) {}
 function blockSelection(){}
