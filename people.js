@@ -1,9 +1,11 @@
 
-String.prototype.replaceAt = function (index, character) {
+///* For Debug purposes, uncomment */ "use strict";
+
+String.prototype.replaceAt = function(index, character) {
 	return this.substr(0, index) + character + this.substr(index + character.length);
 };
 
-String.prototype.indexes = function (find) {
+String.prototype.indexes = function(find) {
 
 	var regexp = new RegExp(find, 'g');
 	var str = this.toString();
@@ -35,8 +37,7 @@ function toNumber(str) {
 }
 
 function lastChar(str, charList) {
-	var lastChar = false;
-	var lastCharPos = false;
+	var lastChar = false, lastCharPos = false;
 
 	var searchDot = str.lastIndexOf('.');
 	var searchComma = str.lastIndexOf(',');
@@ -61,7 +62,6 @@ function clearNumericString(numStr, sep) {
 			cleared = parseFloat(cleared.replace(/\D/g, ''));// fazer back position, verificar ultimo caractere separador para setar ponto lá
 		}
 	}
-	console.log(cleared);
 
 	return cleared;
 }
@@ -72,7 +72,7 @@ Array.prototype.randomItem = function() {
 
 function randomString(len) {
     var rdmString = "";
-    for( ; rdmString.length < len; rdmString  += Math.random().toString(36).substr(2));
+    for( ; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
     return rdmString.substr(0, len);
 }
 
@@ -82,7 +82,7 @@ function objSize(obj) {
 
 function checkAll(e) {
 
-	var element = e.target || event.srcElement;
+	var element = e.target || event.srcElement || e.srcElement;
 
 	if (element.checked) {
 		var arrayElements = document.getElementsByTagName('input');
@@ -139,21 +139,25 @@ function printContent(elementId) {
 
 }
 
-function pageTop() {
+function goTop() {
 	window.scrollTo(0, 0);
 }
 
-function pageBottom() {
+function goBottom() {
 	window.scrollTo(0, document.body.scrollHeight);
 }
 
-function getAllUserFunctions() {
+function putIn(x, y) {
+	window.scrollTo(x, y);    
+}
+
+function notNativeFunctions() { 
 	return Object.keys(window).filter(function (x) {
 		return window[x] instanceof Function && !/\[native code\]/.test(window[x].toString());
 	});
 }
 
-function getUrlParams() {
+function urlParams() {
 	var vars = {};
 	window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
 		vars[key] = value;
@@ -245,7 +249,7 @@ function numberToRoman(num) {
     return result;
 }
 
-Number.prototype.toFixedDown = function(digits) {
+Number.prototype.trunc = function(digits) {
     var n = this - Math.pow(10, -digits)/2;
     n += n / Math.pow(2, 53); 
     return n.toFixed(digits);
@@ -392,6 +396,121 @@ function objToParams(obj){
         .join("&");
 }
 
+function isMobile() { 
+    if(navigator.userAgent.match(/Android/i)
+    || navigator.userAgent.match(/webOS/i)
+    || navigator.userAgent.match(/iPhone/i)
+    || navigator.userAgent.match(/iPad/i)
+    || navigator.userAgent.match(/iPod/i)
+    || navigator.userAgent.match(/BlackBerry/i)
+    || navigator.userAgent.match(/Windows Phone/i)
+    ){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+String.prototype.removeAccents = function () {
+        return this
+                .replace(/[áàãâä]/gi, "a")
+                .replace(/[éè¨ê]/gi,  "e")
+                .replace(/[íìïî]/gi,  "i")
+                .replace(/[óòöôõ]/gi, "o")
+                .replace(/[úùüû]/gi,  "u")
+                .replace(/[ç]/gi,     "c")
+                .replace(/[ñ]/gi,     "n")
+                .replace(/[^a-zA-Z0-9]/g, " ");
+};
+
+String.prototype.has = function(str) { 
+    return this.indexOf(str) !== -1; 
+};
+
+Array.prototype.has = function(item) { 
+    return this.indexOf(item) !== -1; 
+};
+
+Array.prototype.remove = function () {
+    var toRemove, args = arguments, argsLen = args.length, toRemoveIndex;
+    while (argsLen && this.length) {
+        toRemove = args[--argsLen];
+        while ((toRemoveIndex = this.indexOf(toRemove)) !== -1) {
+            this.splice(toRemoveIndex, 1);
+        }
+    }
+    return this;
+};
+
+function blockSelection() {
+    document.selection.empty();
+    window.getSelection().removeAllRanges();
+    document.body.innerHTML += '\
+        <style>*{\n\
+            -webkit-touch-callout: none;\n\
+            -webkit-user-select: none;-khtml-user-select:none;\n\
+            -moz-user-select: none;\n\
+            -ms-user-select: none;\n\
+            user-select: none}\n\
+        </style>';
+}
+
+Array.prototype.indexes = function(item) {
+    var indexes = [], i = -1;
+    while ((i = this.indexOf(item, i+1)) !== -1){
+        indexes.push(i);
+    }
+    return indexes;
+};
+
+Array.prototype.replace = function(xItem, value) {
+    xItem = xItem || {};
+    var arr = this;
+    
+    switch (typeof xItem) {
+        case "object":
+            if (isArray(xItem)){
+                return _replaceArray(arr, xItem, value);
+                break;
+            }
+            
+            Object.keys(xItem).forEach(function(item, index){
+                if (arr.has(item)) {
+                    arr[index] = xItem[item];
+                }
+            });
+            break;
+            
+        default:
+            _singleReplace(arr, xItem, value);
+            break;
+    }
+    
+    function _singleReplace(arr, xItem, value){
+        var indexes = arr.indexes(xItem);
+            indexes.forEach(function(item){
+                arr[item] = value;
+        });
+    }
+    
+    function _replaceArray(arr, xItem, value){
+        if (isArray(xItem) && isArray(value) && xItem.length === value.length) {
+            xItem.forEach(function(item, index){
+                _singleReplace(arr, item, value[index]);
+            });
+        } 
+        return arr;
+    }
+    
+    return arr;
+};
+
+function blockRightClick() {
+    document.addEventListener('contextmenu', function(e){
+        e.preventDefault();
+        return false;
+    },false);
+}
 
 
 /* TO-DO List */
@@ -399,10 +518,4 @@ function objToParams(obj){
 /*
 function autoInstanceParams() {}
 function blockKeys(userEvent) {}
-function blockClicks(userEvent) {}
-function blockSelection(){}
-function hexEncode() {}
-function hexDecode() {}
-function uEncode() {}
-function uDecode() {}		
 */
