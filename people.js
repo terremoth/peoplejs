@@ -152,8 +152,9 @@ function putIn(x, y) {
 }
 
 function notNativeFunctions() { 
+    var Instance = eval('Function');
 	return Object.keys(window).filter(function (x) {
-		return window[x] instanceof Function && !/\[native code\]/.test(window[x].toString());
+		return window[x] instanceof Instance && !/\[native code\]/.test(window[x].toString());
 	});
 }
 
