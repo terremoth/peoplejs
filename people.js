@@ -30,40 +30,26 @@ function toMoney(num, mil, dec, front, back) {
 	return front.toString() + num.toFixed(2).replace('.', dec).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + mil) + back.toString();
 }
 
-function toNumber(str) {
-	var sep = lastCharOccur(str);
-	var clearedStr = clearNumericString(str, sep);
-	return clearedStr;
-}
+function moneyToNumber(str, toFixed) {
+	var lastCharPos = false, floatNumber = 0;
 
-function lastChar(str, charList) {
-	var lastChar = false, lastCharPos = false;
-
-	var searchDot = str.lastIndexOf('.');
+	var searchDot   = str.lastIndexOf('.');
 	var searchComma = str.lastIndexOf(',');
 
 	if (searchDot > searchComma) {
-		lastChar = '.';
 		lastCharPos = searchDot;
 	} else if (searchDot < searchComma) {
-		lastChar = ',';
 		lastCharPos = searchComma;
 	}
 
-	return {'char': lastChar, 'index': lastCharPos};
-}
-
-function clearNumericString(numStr, sep) {
-	sep = (typeof sep === 'object') ? sep : false;
-	var cleared = numStr;
-
-	if (sep) {
-		if (sep.char === ',') {
-			cleared = parseFloat(cleared.replace(/\D/g, ''));// fazer back position, verificar ultimo caractere separador para setar ponto lá
-		}
-	}
-
-	return cleared;
+    str = str.replaceAt(lastCharPos, 'F');
+    str = str.replace(/[\W]/g, '');
+    lastCharPos = str.indexOf('F');
+    str = str.replaceAt(lastCharPos, '.');
+    str = str.replace(/[a-zA-Z]/g, '');
+    floatNumber = parseFloat(str);
+    toFixed = toFixed || floatNumber.toString().length;
+    return parseFloat(floatNumber.toFixed(toFixed));
 }
 
 Array.prototype.randomItem = function() {
@@ -412,7 +398,7 @@ function isMobile() {
     }
 }
 
-String.prototype.removeAccents = function () {
+String.prototype.removeAccents = function() {
         return this
                 .replace(/[áàãâä]/gi, "a")
                 .replace(/[éè¨ê]/gi,  "e")
@@ -512,11 +498,3 @@ function blockRightClick() {
         return false;
     },false);
 }
-
-
-/* TO-DO List */
-
-/*
-function autoInstanceParams() {}
-function blockKeys(userEvent) {}
-*/
