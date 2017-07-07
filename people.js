@@ -502,3 +502,11 @@ function blockRightClick() {
         return false;
     },false);
 }
+
+constant _1s = 1000,
+    _1m = 60 * _1sec,
+    _1h = 60 * _1min,
+    _1d = 24 * _1h;
+    
+
+
