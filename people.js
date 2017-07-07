@@ -52,6 +52,10 @@ function moneyToNumber(str, toFixed) {
     return parseFloat(floatNumber.toFixed(toFixed));
 }
 
+Array.prototype.last = function() {
+    return this.slice(-1).pop();
+}
+
 Array.prototype.randomItem = function() {
     return this[Math.floor(Math.random() * this.length)];
 };
