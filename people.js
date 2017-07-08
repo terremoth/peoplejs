@@ -157,6 +157,12 @@ function objSize(obj) {
 	return Object.keys(obj).length;
 }
 
+function objFunctions(obj) {
+    Object.getOwnPropertyNames(obj).filter(function (p) {
+        return typeof obj[p] === 'function';
+    });
+}
+
 function toggleCheckAll(e) {
 	var element = e.target || event.srcElement || e.srcElement;
     var check = element.checked;
