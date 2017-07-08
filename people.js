@@ -18,46 +18,133 @@ String.prototype.indexes = function(find) {
 	return matches;
 };
 
-function toMoney(num, mil, dec, front, back) {
+String.prototype.removeAccents = function() {
+        return this
+                .replace(/[áàãâä]/gi, "a")
+                .replace(/[éè¨ê]/gi,  "e")
+                .replace(/[íìïî]/gi,  "i")
+                .replace(/[óòöôõ]/gi, "o")
+                .replace(/[úùüû]/gi,  "u")
+                .replace(/[ç]/gi,     "c")
+                .replace(/[ñ]/gi,     "n")
+                .replace(/[^a-zA-Z0-9]/g, " ");
+};
 
-	mil   = mil   || '.';
-	dec   = dec   || ',';
-	front = front || '';
-	back  = back  || '';
+String.prototype.has = function(str) { 
+    return this.indexOf(str) !== -1; 
+};
 
-	num = (typeof num === 'string') ? parseFloat(num) : num;
-
-	return front.toString() + num.toFixed(2).replace('.', dec).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + mil) + back.toString();
-}
-
-function moneyToNumber(str, toFixed) {
-	var lastCharPos = false, floatNumber = 0;
-
-	var searchDot   = str.lastIndexOf('.');
-	var searchComma = str.lastIndexOf(',');
-
-	if (searchDot > searchComma) {
-		lastCharPos = searchDot;
-	} else if (searchDot < searchComma) {
-		lastCharPos = searchComma;
-	}
-
-    str = str.replaceAt(lastCharPos, 'F');
-    str = str.replace(/[\W]/g, '');
-    lastCharPos = str.indexOf('F');
-    str = str.replaceAt(lastCharPos, '.');
-    str = str.replace(/[a-zA-Z]/g, '');
-    floatNumber = parseFloat(str);
-    toFixed = toFixed || floatNumber.toString().length;
-    return parseFloat(floatNumber.toFixed(toFixed));
-}
+String.prototype.beginsWith = function(str) {
+    return this.lastIndexOf(str, 0) === 0;
+};
 
 Array.prototype.last = function() {
     return this.slice(-1).pop();
-}
+};
 
 Array.prototype.randomItem = function() {
     return this[Math.floor(Math.random() * this.length)];
+};
+
+Number.prototype.trunc = function(digits) {
+    var n = this - Math.pow(10, -digits)/2;
+    n += n / Math.pow(2, 53); 
+    return n.toFixed(digits);
+};
+
+Array.prototype.shuffle = function() {
+    this.sort(function() {  
+        return Math.random() - 0.5;
+    });
+};
+
+Array.prototype.empty = function() {
+    this.length = 0;
+};
+
+Array.prototype.trunc = function(n) {
+    n = n || this.length;
+    this.length = n;
+};
+
+Array.prototype.has = function(item) { 
+    return this.indexOf(item) !== -1; 
+};
+
+Array.prototype.remove = function () {
+    var toRemove, args = arguments, argsLen = args.length, toRemoveIndex;
+    
+    while (argsLen && this.length) {
+        toRemove = args[--argsLen];
+        while ((toRemoveIndex = this.indexOf(toRemove)) !== -1) {
+            this.splice(toRemoveIndex, 1);
+        }
+    }
+    return this;
+};
+
+Array.prototype.indexes = function(item) {
+    var indexes = [], i = -1;
+    while ((i = this.indexOf(item, i+1)) !== -1){
+        indexes.push(i);
+    }
+    return indexes;
+};
+
+Array.prototype.replace = function(xItem, value) {
+    xItem = xItem || {};
+    var arr = this;
+    
+    switch (typeof xItem) {
+        case "object":
+            if (isArray(xItem)){
+                return _replaceArray(arr, xItem, value);
+                break;
+            }
+            
+            Object.keys(xItem).forEach(function(item, index){
+                if (arr.has(item)) {
+                    arr[index] = xItem[item];
+                }
+            });
+            break;
+            
+        default:
+            _singleReplace(arr, xItem, value);
+            break;
+    }
+    
+    function _singleReplace(arr, xItem, value){
+        var indexes = arr.indexes(xItem);
+            indexes.forEach(function(item){
+                arr[item] = value;
+        });
+    }
+    
+    function _replaceArray(arr, xItem, value){
+        if (isArray(xItem) && isArray(value) && xItem.length === value.length) {
+            xItem.forEach(function(item, index){
+                _singleReplace(arr, item, value[index]);
+            });
+        } 
+        return arr;
+    }
+    
+    return arr;
+};
+
+Array.prototype.isMulti = function() {
+    var len = this.length, i;
+    for(i = 0; i < len; i++) {
+        if (isArray(this[i])) {
+            return true;
+        }
+    }
+    return false;
+};
+
+Array.prototype.empty = function() {
+    this.length = 0;
 };
 
 function randomString(len) {
@@ -70,40 +157,24 @@ function objSize(obj) {
 	return Object.keys(obj).length;
 }
 
-function checkAll(e) {
-
+function toggleCheckAll(e) {
 	var element = e.target || event.srcElement || e.srcElement;
-
-	if (element.checked) {
-		var arrayElements = document.getElementsByTagName('input');
-
-		for (var i = 0; i < arrayElements.length; i++) {
-			if (arrayElements[i].type === 'checkbox') {
-				arrayElements[i].checked = true;
-			}
-		}
-	}
-    
-	var input = document.getElementById('check');
-	input.setAttribute('onclick', 'DesChekALL(event)');
+    var check = element.checked;
+    var arrayElements = document.getElementsByTagName('input');
+	
+    for (var i = 0; i < arrayElements.length; i++) {
+        if (arrayElements[i].type === 'checkbox') {
+            arrayElements[i].checked = check;
+        }
+    }
 }
 
-function unChekALL(e) {
-
-	try {var element = e.target;} catch (er) {}
-	try {var element = event.srcElement;} catch (er) {}
-
-	var arrayElements = document.getElementsByTagName('input'),
-		length = arrayElements.length;
-	
-	for (var i = 0; i < length; i++) {
-		if (arrayElements[i].type === 'checkbox') {
-			arrayElements[i].checked = false;
-		}
-	}
-
-	var toChange = document.getElementById('check');
-	toChange.setAttribute('onclick', 'CheckAll(event)');
+function isValidForm(id) {
+    if (typeof id === 'number') {
+        return document.forms[id].checkValidity();
+    } else {
+        return document.getElementById(id).checkValidity();
+    }
 }
 
 function printContent(elementId) {
@@ -156,7 +227,13 @@ function urlParams() {
 	return vars;
 }
 
-function constant(name, value) {
+function constant(name, value, evalValue) {
+    evalValue = evalValue || false;
+    
+    if (evalValue === true) {
+        value = eval(value);
+    }
+    
 	Object.defineProperty(typeof global === "object" ? global : window, name, {
 		value: value,
 		enumerable: true,
@@ -165,29 +242,19 @@ function constant(name, value) {
 	});
 }
 
-function formSubmit(subject, value){
-	
-	var d = document;
-	
-	switch (subject){
-		case 'position':
-			d.forms[value].submit();
-			break;
-		
-		case 'id':
-			d.getElementById(value).submit();
-			break;
-			
-		default:
-			console.log('Could not submit this form! Only valid subjects are: "position" and "id", subject given: ' + subject);
-			break;
-	}
+function formSubmit(id, userEvent){
+    userEvent = userEvent || window.event;
+    if (typeof id === 'number') {
+        document.forms[id].submit();
+    } else {
+        document.getElementById(id).submit();
+    }
 }
 
-function enterSubmit(userEvent, id){
-	if (userEvent.keyCode === 13) {
-		document.getElementById(id).submit();
-	}
+function enterSubmit(id, userEvent){
+     if (userEvent.keyCode === 13) {
+         formSubmit(id, userEvent);
+     }
 }
 
 function setFullScreen() {
@@ -239,12 +306,6 @@ function numberToRoman(num) {
     
     return result;
 }
-
-Number.prototype.trunc = function(digits) {
-    var n = this - Math.pow(10, -digits)/2;
-    n += n / Math.pow(2, 53); 
-    return n.toFixed(digits);
-};
 
 function setCookie(cname, cvalue, time) {
     var d = new Date();
@@ -337,40 +398,62 @@ function range(a, b, step){
             A[A.length]= a+= step;
         }
     } else {
-        var s = 'abcdefghijklmnopqrstuvwxyz';
+        var s = 'abcdefghijklmnopqrstuvwxyz'; 
         if(a === a.toUpperCase()) {
             b = b.toUpperCase();
             s = s.toUpperCase();
         }
 
-        s= s.substring(s.indexOf(a), s.indexOf(b)+ 1);
-        A= s.split('');        
+        s = s.substring(s.indexOf(a), s.indexOf(b)+ 1);
+        A = s.split('');        
     }
     return A;
 }
 
-Array.prototype.shuffle = function() {
-    this.sort(function() {  
-        return Math.random() - 0.5;
-    });
-};
-
 function isNumber(n){
     return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function isInt(n){
+    return Number(n) === n && n % 1 === 0;
+}
+
+function isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
 }
 
 function isArray(obj){
     return Object.prototype.toString.call(obj) === '[object Array]' ;
 }
 
-Array.prototype.empty = function() {
-    this.length = 0;
-};
+function isHex(str) {
+    return /^#[0-9A-F]{6}$/i.test(str);
+}
 
-Array.prototype.trunc = function(n) {
-    n = n || this.length;
-    this.length = n;
-};
+function isHexColor(strNum){
+  return (typeof strNum === "string") && strNum.length === 6 
+         && ! isNaN( parseInt(strNum, 16) );
+}
+
+function isEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+function isURL(url) {
+    var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
+        '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+ // domain name
+        '((\d{1,3}\.){3}\d{1,3}))'+ // OR ip (v4) address
+        '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+ // port and path
+        '(\?[;&a-z\d%_.~+=-]*)?'+ // query string
+        '(\#[-a-z\d_]*)?$','i'); // fragment locater
+        
+    if(!pattern.test(url)) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 function microtime() {
     var s, now = (Date.now ? Date.now() : new Date().getTime()) / 1000;
@@ -378,14 +461,6 @@ function microtime() {
     return (Math.round((now - s) * 1000) / 1000) + ' ' + s;
 }
 
-function objToParams(obj){
-  return "?" + Object
-        .keys(obj)
-        .map(function(key){
-          return key+"="+obj[key];
-        })
-        .join("&");
-}
 
 function isMobile() { 
     if(navigator.userAgent.match(/Android/i)
@@ -402,36 +477,14 @@ function isMobile() {
     }
 }
 
-String.prototype.removeAccents = function() {
-        return this
-                .replace(/[áàãâä]/gi, "a")
-                .replace(/[éè¨ê]/gi,  "e")
-                .replace(/[íìïî]/gi,  "i")
-                .replace(/[óòöôõ]/gi, "o")
-                .replace(/[úùüû]/gi,  "u")
-                .replace(/[ç]/gi,     "c")
-                .replace(/[ñ]/gi,     "n")
-                .replace(/[^a-zA-Z0-9]/g, " ");
-};
-
-String.prototype.has = function(str) { 
-    return this.indexOf(str) !== -1; 
-};
-
-Array.prototype.has = function(item) { 
-    return this.indexOf(item) !== -1; 
-};
-
-Array.prototype.remove = function () {
-    var toRemove, args = arguments, argsLen = args.length, toRemoveIndex;
-    while (argsLen && this.length) {
-        toRemove = args[--argsLen];
-        while ((toRemoveIndex = this.indexOf(toRemove)) !== -1) {
-            this.splice(toRemoveIndex, 1);
-        }
-    }
-    return this;
-};
+function objToParams(obj){
+  return "?" + Object
+        .keys(obj)
+        .map(function(key){
+          return key+"="+obj[key];
+        })
+        .join("&");
+}
 
 function blockSelection() {
     document.selection.empty();
@@ -446,55 +499,9 @@ function blockSelection() {
         </style>';
 }
 
-Array.prototype.indexes = function(item) {
-    var indexes = [], i = -1;
-    while ((i = this.indexOf(item, i+1)) !== -1){
-        indexes.push(i);
-    }
-    return indexes;
-};
-
-Array.prototype.replace = function(xItem, value) {
-    xItem = xItem || {};
-    var arr = this;
-    
-    switch (typeof xItem) {
-        case "object":
-            if (isArray(xItem)){
-                return _replaceArray(arr, xItem, value);
-                break;
-            }
-            
-            Object.keys(xItem).forEach(function(item, index){
-                if (arr.has(item)) {
-                    arr[index] = xItem[item];
-                }
-            });
-            break;
-            
-        default:
-            _singleReplace(arr, xItem, value);
-            break;
-    }
-    
-    function _singleReplace(arr, xItem, value){
-        var indexes = arr.indexes(xItem);
-            indexes.forEach(function(item){
-                arr[item] = value;
-        });
-    }
-    
-    function _replaceArray(arr, xItem, value){
-        if (isArray(xItem) && isArray(value) && xItem.length === value.length) {
-            xItem.forEach(function(item, index){
-                _singleReplace(arr, item, value[index]);
-            });
-        } 
-        return arr;
-    }
-    
-    return arr;
-};
+function goUrl(url) {
+    window.location.href = url;
+}
 
 function blockRightClick() {
     document.addEventListener('contextmenu', function(e){
@@ -503,10 +510,113 @@ function blockRightClick() {
     },false);
 }
 
-constant _1s = 1000,
-    _1m = 60 * _1sec,
-    _1h = 60 * _1min,
-    _1d = 24 * _1h;
+function toMoney(num, mil, dec, front, back) {
+
+	mil   = mil   || '.';
+	dec   = dec   || ',';
+	front = front || '';
+	back  = back  || '';
+
+	num = (typeof num === 'string') ? parseFloat(num) : num;
+
+	return front.toString() + num.toFixed(2).replace('.', dec).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + mil) + back.toString();
+}
+
+function moneyToNumber(str, toFixed) {
+	var lastCharPos = false, floatNumber = 0;
+
+	var searchDot   = str.lastIndexOf('.');
+	var searchComma = str.lastIndexOf(',');
+
+	if (searchDot > searchComma) {
+		lastCharPos = searchDot;
+	} else if (searchDot < searchComma) {
+		lastCharPos = searchComma;
+	}
+
+    str = str.replaceAt(lastCharPos, 'F');
+    str = str.replace(/[\W]/g, '');
+    lastCharPos = str.indexOf('F');
+    str = str.replaceAt(lastCharPos, '.');
+    str = str.replace(/[a-zA-Z]/g, '');
+    floatNumber = parseFloat(str);
+    toFixed = toFixed || floatNumber.toString().length;
+    return parseFloat(floatNumber.toFixed(toFixed));
+}
+
+/* needs more refactoring */
+function serialize(form) {
+    if (!form || form.nodeName !== "FORM") {
+      return false;
+    }
     
+    var i = form.elements.length - 1,  j = 0, q = [];
+    
+    while (i >= 0) {
+        var element = form.elements[i];
+        var elementName = element.name, elementType = element.type, elementValue = element.value;
+        
+        if (elementName === "") {
+            i = i - 1;
+            continue;
+        }
+        
+        switch (element.nodeName) {
+            case "INPUT":
+                switch (elementType) {
+                    case "checkbox":
+                    case "radio":
+                        if (element.checked) {
+                            q.push(elementName + "=" + encodeURIComponent(elementValue));
+                        }
+                        break;
+                    default:
+                        q.push(elementName + "=" + encodeURIComponent(elementValue));
+                        break;
+                }
+                break;
+                
+            case "TEXTAREA":
+                q.push(elementName + "=" + encodeURIComponent(elementValue));
+                break;
+            
+            case "SELECT":
+                switch (elementType) {
+                  case "select-one":
+                    q.push(elementName + "=" + encodeURIComponent(elementValue));
+                    break;
+                  case "select-multiple":
+                    j = element.options.length - 1;
+                    while (j >= 0) {
+                      if (element.options[j].selected) {
+                        q.push(elementName + "=" + encodeURIComponent(element.options[j].value));
+                      }
+                      j = j - 1;
+                    }
+                }
+                break;
+                
+            case "BUTTON":
+                q.push(elementName + "=" + encodeURIComponent(elementValue));
+                break;
+        }
+        
+        i = i - 1;
+    }
+    return q.join("&");
+};
 
+/* TO-DO */
+function peopleMask(){
+    var toMask = document.querySelectorAll('input[data-mask]');
+        toMask.addEventListener();
+}
 
+constant("_1s", 1000);
+constant("_1i", "60  * _1s", true);
+constant("_1h", "60  * _1i", true);
+constant("_1d", "24  * _1h", true);
+constant("_1w", "7   * _1d", true);
+constant("_1m", "30  * _1w", true);
+constant("_6m", "6   * _1m", true);
+constant("_1y", "365 * _1d", true);
