@@ -143,8 +143,12 @@ Array.prototype.isMulti = function() {
     return false;
 };
 
-Array.prototype.empty = function() {
-    this.length = 0;
+Array.prototype.isEmpty = function() {
+    return this.length === 0;
+};
+
+Array.prototype.clear = function() {
+    return this.length = 0;
 };
 
 function randomString(len) {
@@ -183,20 +187,19 @@ function isValidForm(id) {
     }
 }
 
-function printContent(elementId) {
+function printContent(elemId) {
 
-	var d = document,
-	    elementsContent = d.getElementById(elementId).innerHTML,
-	    oldPage = d.body.innerHTML;
+	var d = document, body = d.body,
+	    elementsContent = d.getElementById(elemId).innerHTML,
+	    oldPage = body.innerHTML;
 
-	d.body.innerHTML =
-			"<html>\n\
-			<head>\n\
-				<meta charset='" + d.characterSet + "'>\n\
-				<title>Print</title>\n\
-			</head>\n\
-			<body>" + elementsContent + "</body>\n\
-		</html>";
+	body.innerHTML ="<html>"+
+                        "<head>"+
+                            "<meta charset='" + d.characterSet + "'>"+
+                                "<title>Print</title>"+
+                        "</head>"+
+                        "<body>" + elementsContent + "</body>"+
+                    "</html>";
 
 	//Print Page
 	window.print();
