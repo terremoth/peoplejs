@@ -1,5 +1,12 @@
 
-///* For Debug purposes, uncomment */ "use strict";
+///* For Debug purposes, uncomment this line */ "use strict";
+
+/*
+ * For PeopleJS use only.
+ * Generally, will be user to store async processes
+ * # Only push to this array
+ */
+var ___CACHE = []; 
 
 String.prototype.replaceAt = function(index, character) {
 	return this.substr(0, index) + character + this.substr(index + character.length);
@@ -634,7 +641,7 @@ function peopleMask(){
 }
 
 
-function ajax(params) {
+function ajax(params, callback) {
     params = params || {};
     var ajaxParams = {
         method      : params.method       || 'get',
@@ -646,19 +653,14 @@ function ajax(params) {
         data        : params.data         || false,
         dataType    : params.dataType     || 'text',
         as          : params.as           || 'text',
-        response    : params.response     || false
     };
     
-    console.log(ajaxParams);
-    
     var ajax = new XMLHttpRequest();
+    callback = callback || function(data){return data;};
+    
     ajax.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            if (typeof ajaxParams.response === 'function') { // TO-DO more ifs
-                ajaxParams.response();
-            } else {
-                return ajax.responseText;
-            }
+            return callback(this.responseText);
         }
     };
     var method = ajaxParams.method.toLowerCase();
@@ -670,7 +672,11 @@ function ajax(params) {
         } 
     }
     
-    ajax.open(ajaxParams.method, ajaxParams.url, ajaxParams.async, ajaxParams.user, ajaxParams.pass);
+    ajax.open(ajaxParams.method, ajaxParams.url, ajaxParams.async);
+    
+    if (method === 'post') {
+        ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    }
     
     if ( ! objEmpty(ajaxParams.headers)) {
         var headers = ajaxParams.headers, header;
@@ -678,11 +684,7 @@ function ajax(params) {
             ajax.setRequestHeader(header, headers[header]);
         };
     }
-    
-    if (method === 'post') {
-        ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    }
-    
+
     ajax.send(ajaxParams.data);
 }
 
@@ -700,28 +702,68 @@ function bookmarkThisPage() {
     }
 }
 
-/* TO-DO*/
-WebPage = {
-    cameFrom : function() {
-        return document.referrer;
-    },
-    version : function() {
-        
-    },
-    plugins: function() {
-        var plugins = [];
-        for (var i in navigator.plugins) {
-            if (typeof (navigator.plugins[i]) === 'object') {
-                plugins.push(navigator.plugins[i].name)
-            }
-        };
-        return plugins;
-    },
-    extensions: function() {
-        
+function getBrowser() {
+    var ua = navigator.userAgent, tem, 
+    browser = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+
+    if(/trident/i.test(browser[1])){
+        tem =  /\brv[ :]+(\d+)/g.exec(ua) || [];
+        return 'IE '+(tem[1] || '');
     }
+
+    if(browser[1] === 'Chrome'){
+        tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+        if(tem !== null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+    }
+
+    browser = browser[2] ? [browser[1], browser[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem = ua.match(/version\/(\d+)/i))!== null) browser.splice(1, 1, tem[1]);
     
-};
+    return browser.join(' ');
+}
+
+function browserPlugins() {
+    var plugins = [];
+    for (var i in navigator.plugins) {
+        if (typeof (navigator.plugins[i]) === 'object') {
+            plugins.push(navigator.plugins[i].name);
+        }
+    };
+    return plugins;
+}
+
+
+function getIp(selector) {
+    selector = selector || false;
+    ajax({
+        url: "http://api.ipify.org/"
+    }, function(data) {
+        if (selector) {
+            document.querySelectorAll(selector).forEach(function(item) {
+                item.innerHTML += data;
+            });
+        } else {
+            ___CACHE.push(data);
+        }
+    });
+}
+
+function blink(selector, speed) {
+    selector = selector || 'blink';
+    speed = speed || 500;
+    var elements = document.querySelectorAll(selector);
+    
+    elements.forEach(function(item){
+        var el = item; 
+        setInterval(function(){
+            if (el.style.opacity === '' || el.style.opacity === '1') {
+                el.style.opacity = '0.0';
+            } else {
+                el.style.opacity = '1.0';
+            }
+        }, speed);
+    });
+}
 
 constant("_1s", 1000);
 constant("_1i", "60  * _1s", true);
