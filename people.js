@@ -52,14 +52,14 @@ Number.prototype.trunc = function(digits) {
     return n.toFixed(digits);
 };
 
+Number.prototype.toRoman = function() {
+    return numberToRoman(this);
+};
+
 Array.prototype.shuffle = function() {
     this.sort(function() {  
         return Math.random() - 0.5;
     });
-};
-
-Array.prototype.empty = function() {
-    this.length = 0;
 };
 
 Array.prototype.trunc = function(n) {
@@ -159,6 +159,10 @@ function randomString(len) {
 
 function objSize(obj) {
 	return Object.keys(obj).length;
+}
+
+function objEmpty(obj) {
+    return objSize(obj) === 0;
 }
 
 function objFunctions(obj) {
@@ -301,7 +305,7 @@ function romanToNumber(str) {
     return result;
 }
 
-function numberToRoman(num) {  
+function numberToRoman(num) {
     var result = '',
         decimal = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1],
         roman = ["M", "CM","D","CD","C", "XC", "L", "XL", "X","IX","V","IV","I"];
@@ -554,7 +558,7 @@ function moneyToNumber(str, toFixed) {
 }
 
 /* needs more refactoring */
-function serialize(form) {
+function serializeForm(form) {
     if (!form || form.nodeName !== "FORM") {
       return false;
     }
@@ -615,14 +619,113 @@ function serialize(form) {
     return q.join("&");
 };
 
+function serializeJSON(json) {
+    
+}
+
+function isValid(x) {
+    return (x === 0 ? true : !!x);
+}
+
 /* TO-DO */
 function peopleMask(){
     var toMask = document.querySelectorAll('input[data-mask]');
         toMask.addEventListener();
 }
 
+
+function ajax(params) {
+    params = params || {};
+    var ajaxParams = {
+        method      : params.method       || 'get',
+        url         : params.url          || location.href,
+        async       : params.async        || true,
+        user        : params.user         || undefined,
+        pass        : params.pass         || undefined,
+        headers     : params.header       || {},
+        data        : params.data         || false,
+        dataType    : params.dataType     || 'text',
+        as          : params.as           || 'text',
+        response    : params.response     || false
+    };
+    
+    console.log(ajaxParams);
+    
+    var ajax = new XMLHttpRequest();
+    ajax.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            if (typeof ajaxParams.response === 'function') { // TO-DO more ifs
+                ajaxParams.response();
+            } else {
+                return ajax.responseText;
+            }
+        }
+    };
+    var method = ajaxParams.method.toLowerCase();
+    
+    if (method === 'get' && ajaxParams.data) {
+        if (typeof ajaxParams.data === 'object') { 
+            ajaxParams.data = serializeJSON(ajaxParams.data);
+            ajaxParams.url = ajaxParams.url+ajaxParams.data;
+        } 
+    }
+    
+    ajax.open(ajaxParams.method, ajaxParams.url, ajaxParams.async, ajaxParams.user, ajaxParams.pass);
+    
+    if ( ! objEmpty(ajaxParams.headers)) {
+        var headers = ajaxParams.headers, header;
+        for (header in headers) {
+            ajax.setRequestHeader(header, headers[header]);
+        };
+    }
+    
+    if (method === 'post') {
+        ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    }
+    
+    ajax.send(ajaxParams.data);
+}
+
+function bookmarkThisPage() {
+    
+    if (window.sidebar && window.sidebar.addPanel) { // Mozilla Firefox Bookmark
+        window.sidebar.addPanel(document.title, window.location.href, '');
+    } else if (window.external && ('AddFavorite' in window.external)) { // IE Favorite
+        window.external.AddFavorite(location.href, document.title);
+    } else if (window.opera && window.print) { // Opera Hotlist
+        this.title = document.title;
+        return true;
+    } else { // webkit - safari/chrome
+        alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') !== -1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this page.');
+    }
+}
+
+/* TO-DO*/
+WebPage = {
+    cameFrom : function() {
+        return document.referrer;
+    },
+    version : function() {
+        
+    },
+    plugins: function() {
+        var plugins = [];
+        for (var i in navigator.plugins) {
+            if (typeof (navigator.plugins[i]) === 'object') {
+                plugins.push(navigator.plugins[i].name)
+            }
+        };
+        return plugins;
+    },
+    extensions: function() {
+        
+    }
+    
+};
+
 constant("_1s", 1000);
 constant("_1i", "60  * _1s", true);
+constant("_5i", "5   * _1i", true);
 constant("_1h", "60  * _1i", true);
 constant("_1d", "24  * _1h", true);
 constant("_1w", "7   * _1d", true);
