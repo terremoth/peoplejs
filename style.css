@@ -1,0 +1,45 @@
+* {
+    font-family: sans-serif;
+}
+body, header, aside {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    height: 80px;
+    width: 100%;
+    background-color: #6A1B9A;
+    color: white;
+}
+header > * {
+    margin-left: 10px;
+    padding: 5px;
+}
+
+header > h6, header > h1 {
+    margin: 0 0 0 10px;
+}
+
+aside > nav, aside > h5 {
+    margin-left: 10px; 
+}
+
+aside {
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    width: 325px;
+    background-color: lightgrey;
+    float: left;
+    position: static;
+}
+section {
+    float: left;
+    width: calc(100vw - 600px);
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+section > h2 {
+    margin: 10px 0 0 10px;
+}

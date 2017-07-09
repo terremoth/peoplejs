@@ -8,6 +8,8 @@
  */
 var ___CACHE = []; 
 
+constant('PEOPLEJS_VERSION', "1.0.0"); 
+
 String.prototype.replaceAt = function(index, character) {
 	return this.substr(0, index) + character + this.substr(index + character.length);
 };
@@ -53,16 +55,6 @@ Array.prototype.randomItem = function() {
     return this[Math.floor(Math.random() * this.length)];
 };
 
-Number.prototype.trunc = function(digits) {
-    var n = this - Math.pow(10, -digits)/2;
-    n += n / Math.pow(2, 53); 
-    return n.toFixed(digits);
-};
-
-Number.prototype.toRoman = function() {
-    return numberToRoman(this);
-};
-
 Array.prototype.shuffle = function() {
     this.sort(function() {  
         return Math.random() - 0.5;
@@ -76,6 +68,46 @@ Array.prototype.trunc = function(n) {
 
 Array.prototype.has = function(item) { 
     return this.indexOf(item) !== -1; 
+};
+
+Array.prototype.desc = function() { 
+    return this.sort(function(a, b){return b-a;}); 
+};
+
+Array.prototype.__oddEven = function(type, order) {
+    var oddEven = [];
+    order = order || false;
+    type = type || 'odd';
+    
+    this.forEach(function(item) {
+        if (type === 'odd') {
+            var expr = (Math.abs(item % 2) === 0);
+        } else {
+            var expr = (Math.abs(item % 2) === 1);
+        }
+        
+        if (isInt(item) && expr) {
+            oddEven.push(item);
+        }
+    });
+    
+    switch (order) {
+        case 'asc':
+            return oddEven.sort();
+            break;
+        case 'desc':
+            return oddEven.desc();
+        break;
+    }
+    return oddEven;
+};
+
+Array.prototype.odd = function(order) {
+    return this.prototype.__oddEven('odd', order);
+};
+
+Array.prototype.even = function(order) {
+    return this.prototype.__oddEven('even', order);
 };
 
 Array.prototype.remove = function () {
@@ -158,6 +190,16 @@ Array.prototype.clear = function() {
     return this.length = 0;
 };
 
+Number.prototype.trunc = function(digits) {
+    var n = this - Math.pow(10, -digits)/2;
+    n += n / Math.pow(2, 53); 
+    return n.toFixed(digits);
+};
+
+Number.prototype.toRoman = function() {
+    return numberToRoman(this);
+};
+
 function randomString(len) {
     var rdmString = "";
     for( ; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
@@ -228,7 +270,7 @@ function goBottom() {
 	window.scrollTo(0, document.body.scrollHeight);
 }
 
-function putIn(x, y) {
+function pagePos(x, y) {
 	window.scrollTo(x, y);    
 }
 
@@ -438,6 +480,13 @@ function isInt(n){
     return Number(n) === n && n % 1 === 0;
 }
 
+function isNatural(n){
+    if (isInt(n)) {
+        return n >= 0;
+    }
+    return false;
+}
+
 function isFloat(n){
     return Number(n) === n && n % 1 !== 0;
 }
@@ -542,7 +591,7 @@ function toMoney(num, mil, dec, front, back) {
 	return front.toString() + num.toFixed(2).replace('.', dec).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + mil) + back.toString();
 }
 
-function moneyToNumber(str, toFixed) {
+function moneyToFloat(str, toFixed) {
 	var lastCharPos = false, floatNumber = 0;
 
 	var searchDot   = str.lastIndexOf('.');
@@ -626,8 +675,8 @@ function serializeForm(form) {
     return q.join("&");
 };
 
-function serializeJSON(json) {
-    
+function serializeJson(json) {
+    return objToParams(json);
 }
 
 function isValid(x) {
@@ -652,7 +701,7 @@ function ajax(params, callback) {
         headers     : params.header       || {},
         data        : params.data         || false,
         dataType    : params.dataType     || 'text',
-        as          : params.as           || 'text',
+        as          : params.as           || 'text'
     };
     
     var ajax = new XMLHttpRequest();
@@ -688,7 +737,7 @@ function ajax(params, callback) {
     ajax.send(ajaxParams.data);
 }
 
-function bookmarkThisPage() {
+function bookmarkPage() {
     
     if (window.sidebar && window.sidebar.addPanel) { // Mozilla Firefox Bookmark
         window.sidebar.addPanel(document.title, window.location.href, '');
@@ -738,6 +787,30 @@ function getIp(selector) {
     ajax({
         url: "http://api.ipify.org/"
     }, function(data) {
+        if (selector) {
+            document.querySelectorAll(selector).forEach(function(item) {
+                item.innerHTML += data;
+            });
+        } else {
+            ___CACHE.push(data);
+        }
+    });
+}
+
+function getCurrency(selector, symbol, base) {
+    selector = selector || false;
+    symbol = symbol || false;
+    base = base || "USD";
+    
+    ajax({
+        url: "http://api.fixer.io/latest?base="+base
+    }, function(data) {
+        data = JSON.parse(data);
+        
+        if (symbol){
+            data = data.rates[symbol];
+        }
+        
         if (selector) {
             document.querySelectorAll(selector).forEach(function(item) {
                 item.innerHTML += data;

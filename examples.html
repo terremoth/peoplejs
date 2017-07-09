@@ -1,21 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>People JS</title>
+		<title>PeopleJS - Made by people, for people! - Free Software</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            * {
-                font-family: sans-serif;
-            }
-        </style>
+        <link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-		<h1>The People JS</h1>
-        <blink>Lucas</blink>
-        
-        
-        
+        <header>
+            <h1>PeopleJS - The People JavaScript Library</h1>
+            <h6>Made by people, for people! - Free Software</h6>
+        </header>
+        <aside>
+            <h4>Functions</h4>
+            <nav>
+                <h5>Extendind String</h5>
+                <ul>
+                    <li><a href="#">String.prototype.<strong>replaceAt</strong></a></li>
+                    <li><a href="#">String.prototype.<strong>indexes</strong></a></li>
+                    <li><a href="#">String.prototype.<strong>removeAccents</strong></a></li>
+                    <li><a href="#">String.prototype.<strong>has</strong></a></li>
+                    <li><a href="#">String.prototype.<strong>beginsWith</strong></a></li>
+                </ul>
+                <h5>Extendind Array</h5>
+                <ul>
+                    <li><a href="#">Array.prototype.<strong>last</strong></a></li>
+                    <li><a href="#">Array.prototype.<strong>randomItem</strong></a></li>
+                    <li><a href="#">Array.prototype.<strong>shuffle</strong></a></li>
+                    <li><a href="#">Array.prototype.<strong>trunc</strong></a></li>
+                    <li><a href="#">Array.prototype.<strong>has</strong></a></li>
+                    <li><a href="#">Array.prototype.<strong>remove</strong></a></li>
+                    <li><a href="#">Array.prototype.<strong>indexes</strong></a></li>
+                    <li><a href="#">Array.prototype.<strong>replace</strong></a></li>
+                    <li><a href="#">Array.prototype.<strong>isMulti</strong></a></li>
+                    <li><a href="#">Array.prototype.<strong>isEmpty</strong></a></li>
+                    <li><a href="#">Array.prototype.<strong>clear</strong></a></li>
+                </ul>
+                <h5>Extendind Number</h5>
+                <ul>
+                    <li><a href="#">Number.prototype.<strong>trunc</strong></a></li>
+                    <li><a href="#">Number.prototype.<strong>toRoman</strong></a>
+                        <ul>
+                            <li><a href="#">romanToNumber</a></li>
+                            <li><a href="#">numberToRoman</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <h5>Validation</h5>
+                <ul>
+                    <li><a href="#">isValid</a></li>
+                    <li><a href="#">isInt</a></li>
+                    <li><a href="#">isFloat</a></li>
+                    <li><a href="#">isNumber</a></li>
+                    <li><a href="#">isArray</a></li>
+                    <li><a href="#">isHex</a></li>
+                    <li><a href="#">isHexColor</a></li>
+                    <li><a href="#">isURL</a></li>
+                    <li><a href="#">isEmail</a></li>
+                    <li><a href="#">isMobile</a></li>
+                </ul>
+                <h5>Random / Generate</h5>
+                <ul>
+                    <li><a href="#">intRandom</a></li>
+                    <li><a href="#">randomString</a></li>
+                    <li><a href="#">floatRandom</a></li>
+                    <li><a href="#">range</a></li>
+                </ul>
+                <h5>Object Stuff</h5>
+                <ul>
+                    <li><a href="#">objSize</a></li>
+                    <li><a href="#">objEmpty</a></li>
+                    <li><a href="#">objFunctions</a></li>
+                    <li><a href="#">objToParams</a></li>
+                </ul>
+                <h5>Form Related</h5>
+                <ul>
+                    <li><a href="#">formSubmit</a></li>
+                    <li><a href="#">enterSubmit</a></li>
+                    <li><a href="#">isValidForm</a></li>
+                    <li><a href="#">toggleCheckAll</a></li>
+                    <li><a href="#">serializeForm</a></li>
+                    <li><a href="#">serializeJson</a></li>
+                </ul>
+                <h5>Cookies Manipulation</h5>
+                <ul>
+                    <li><a href="#">setCookie</a></li>
+                    <li><a href="#">getCookie</a></li>
+                    <li><a href="#">listCookies</a></li>
+                    <li><a href="#">deleteCookie</a></li>
+                    <li><a href="#">clearCookies</a></li>
+                </ul>
+                <h5>Page Behavior</h5>
+                <ul>
+                    <li><a href="#">windowSize</a></li>
+                    <li><a href="#">printContent</a></li>
+                    <li><a href="#">setFullScreen</a></li>
+                    <li><a href="#">goTop</a></li>
+                    <li><a href="#">goBottom</a></li>
+                    <li><a href="#">pagePos</a></li>
+                </ul>
+                <h5>User/Browser Information</h5>
+                <ul>
+                    <li><a href="#">getBrowser</a></li>
+                    <li><a href="#">bookmarkPage</a></li>
+                    <li><a href="#">browserPlugins</a></li>
+                    <li><a href="#">goUrl</a></li>
+                    <li><a href="#">urlParams</a></li>
+                    <li><a href="#">notNativeFunctions</a></li>
+                    <li><a href="#">getIp</a></li>
+                    <li><a href="#">microtime</a></li>
+                </ul>
+                <h5>Money Related</h5>
+                <ul>
+                    <li><a href="#">toMoney</a></li>
+                    <li><a href="#">moneyToFloat</a></li>
+                    <li><a href="#">getCurrency</a></li>
+                </ul>
+                <h5>HTML Related</h5>
+                <ul>
+                    <li><a href="#">ss</a></li>
+                    <li><a href="#">blockSelection</a></li>
+                    <li><a href="#">blink</a></li>
+                </ul>
+                <h5>Interfecing</h5>
+                <ul>
+                    <li><a href="#">constant</a></li>
+                    <li><a href="#">ajax</a></li>
+                </ul>
+                <h5>Future Functions</h5>
+                <ul>
+                    <li><a href="#">peopleMask</a></li>
+                    <li><a href="#">unSerializeJson</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <section>
+            <h2>Documentation</h2>
+            
+        </section>
+        <footer>
+            
+        </footer>
         <script type="text/javascript" src="people.js"></script>
 		<script type="text/javascript" src="testExample.js"></script>
 	</body>
