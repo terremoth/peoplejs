@@ -25,6 +25,11 @@ aside > nav, aside > h5 {
     margin-left: 10px; 
 }
 
+nav > h5 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 aside {
     height: calc(100vh - 80px);
     overflow-y: auto;
@@ -33,17 +38,22 @@ aside {
     float: left;
     position: static;
 }
-section {
-    height: calc(100vh - 80px);
+body > section {
+    height: calc(100vh - 110px);
     overflow-y: auto;
     background-color: #eee;
+    padding-left: 30px;
+    padding-top: 30px;
 }
 
-section > h2 {
-    margin: 10px 0 0 10px;
+hr {
+    margin: 20px 0px 20px 0px;
 }
 
-.spacer {
-    margin-left: 30px;
-    margin-top: 30px;
+output {
+    display: block;
+    padding: 10px 0px 10px 10px;
+    margin-top: 15px;
+    background-color: lightgrey;
+    border: 1px dashed grey;
 }

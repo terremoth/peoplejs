@@ -3,15 +3,72 @@
 
 /*
  * For PeopleJS use only.
- * Generally, will be user to store async processes
+ * Generally, will be used to store async results
  * # Only push to this array
  */
 var ___CACHE = []; 
 
 constant('PEOPLEJS_VERSION', "1.0.0"); 
 
-String.prototype.replaceAt = function(index, character) {
-	return this.substr(0, index) + character + this.substr(index + character.length);
+var Randomic = {};
+    Randomic.int = function(min ,max) {
+        min = min || 0;
+        max = max || 10;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+    Randomic.float = function(min, max) {
+        min = min || 0;
+        max = max || 0;
+        return Math.random() * (max - min) + min;
+    };
+    Randomic.range = function(start, end, step) {
+        start = start || 0;
+        end   = end   || 10;
+        
+        var randomArr = [];
+        if (typeof start === 'number') {
+            randomArr[0]= start;
+            step = step || 1;
+            while (start + step <= end) {
+                randomArr[randomArr.length]= start+= step;
+            }
+        } else {
+            var str = 'abcdefghijklmnopqrstuvwxyz'; 
+            if(start === start.toUpperCase()) {
+                end = end.toUpperCase();
+                str = str.toUpperCase();
+            }
+
+            str = str.substring(str.indexOf(start), str.indexOf(end)+ 1);
+            randomArr = str.split('');        
+        }
+        return randomArr;
+    };
+    Randomic.string = function(len) {
+        len = len || 10;
+        var rdmString = "";
+        for( ; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
+        return rdmString.substr(0, len);
+    };
+    Randomic.arrayInt = function(minSize, maxSize, minInt, maxInt) {
+        minSize = minSize || 5;
+        maxSize = maxSize || 10;
+
+        minInt = minInt || 0;
+        maxInt = maxInt || 100;
+
+        var arr = [], i;
+        var randomSize = Randomic.int(minSize, maxSize);
+
+        for(i = 0; i < randomSize; i++) {
+            arr.push(Randomic.int(minInt, maxInt));
+        }
+        return arr;
+    };
+// End of Randomic Object
+
+String.prototype.replaceAt = function(index, str) {
+	return this.substr(0, index) + str + this.substr(index + str.length);
 };
 
 String.prototype.indexes = function(find) {
@@ -104,22 +161,6 @@ Array.prototype.__oddEven = function(type, order) {
 
 Array.prototype.odd = function(order) {
     return this.prototype.__oddEven('odd', order);
-};
-
-function randomArrayInt(minSize, maxSize, minInt, maxInt) {
-    minSize = minSize || 5;
-    maxSize = maxSize || 10;
-    
-    minInt = minInt || 0;
-    maxInt = maxInt || 100;
-    
-    var arr = [], i;
-    var randomSize = intRandom(minSize, maxSize);
-    
-    for(i = 0; i < randomSize; i++) {
-        arr.push(intRandom(minInt, maxInt));
-    }
-    return arr;
 };
 
 Array.prototype.even = function(order) {
@@ -215,12 +256,6 @@ Number.prototype.trunc = function(digits) {
 Number.prototype.toRoman = function() {
     return numberToRoman(this);
 };
-
-function stringRandom(len) {
-    var rdmString = "";
-    for( ; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
-    return rdmString.substr(0, len);
-}
 
 function objSize(obj) {
 	return Object.keys(obj).length;
@@ -457,35 +492,6 @@ function windowSize() {
         x = w.innerWidth || e.clientWidth || g.clientWidth,
         y = w.innerHeight|| e.clientHeight|| g.clientHeight;
     return {"width": x, "height": y};
-}
-
-function floatRandom(min, max) {
-   return Math.random() * (max - min) + min;
-}
-
-function intRandom(min, max) {
-   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function range(a, b, step){
-    var A = [];
-    if (typeof a === 'number') {
-        A[0]= a;
-        step = step || 1;
-        while (a + step <= b) {
-            A[A.length]= a+= step;
-        }
-    } else {
-        var s = 'abcdefghijklmnopqrstuvwxyz'; 
-        if(a === a.toUpperCase()) {
-            b = b.toUpperCase();
-            s = s.toUpperCase();
-        }
-
-        s = s.substring(s.indexOf(a), s.indexOf(b)+ 1);
-        A = s.split('');        
-    }
-    return A;
 }
 
 function isNumber(n){

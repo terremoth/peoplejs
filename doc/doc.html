@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>PeopleJS - Made by people, for people! - Free Software</title>
-		<meta charset="UTF-8">
+    <head>
+        <title>PeopleJS - Made by people, for people! - Free Software</title>
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="style.css">
-	</head>
-	<body>
+    </head>
+    <body>
         <header>
             <h1>PeopleJS - The People JavaScript Library</h1>
             <h6>Made by people, for people! - Free Software</h6>
@@ -63,10 +63,11 @@
                 </ul>
                 <h5>Random / Generate</h5>
                 <ul>
-                    <li><a href="#">intRandom</a></li>
-                    <li><a href="#">stringRandom</a></li>
-                    <li><a href="#">floatRandom</a></li>
-                    <li><a href="#">range</a></li>
+                    <li><a href="#">Randomic.int</a></li>
+                    <li><a href="#">Randomic.float</a></li>
+                    <li><a href="#">Randomic.string</a></li>
+                    <li><a href="#">Randomic.range</a></li>
+                    <li><a href="#">Randomic.arrayInt</a></li>
                 </ul>
                 <h5>Object Stuff</h5>
                 <ul>
@@ -133,27 +134,109 @@
                 <ul>
                     <li><a href="#">peopleMask</a></li>
                     <li><a href="#">unSerializeJson</a></li>
-                    <li><a href="#">randomArrayInt</a></li>
-                    <li><a href="#">randomArrayFloat</a></li>
-                    <li><a href="#">randomArrayString</a></li>
-                    <li><a href="#">randomArrayMix</a></li>
+                    <li><a href="#">sanitize</a></li>
+                    <li><a href="#">Randomic.arrayFloat</a></li>
+                    <li><a href="#">Randomic.arrayString</a></li>
+                    <li><a href="#">Randomic.mix</a></li>
                 </ul>
             </nav>
         </aside>
         <section>
-            <div class="spacer">
+            <main>
                 <h2>Documentation</h2>
-                <main>
+                <hr>
+                <article >
+                    <h3>String.prototype.replaceAt</h3>
                     <code>
-                        String.prototype.<strong>replaceAt</strong>
+                        string replaceAt ( int index, string str )
                     </code>
-                </main>
-            </div>
+                    <p>
+                        Description: Replaces item in "index" to "str".
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        int index: the string index <br>
+                        string str: the string that will be replaced in when this function finds "index"
+                    </code>
+                    <h4>Examples:</h4>
+                    Write a String: <input type="text" value="João da Silva"> 
+                    Index to find: <input type="number" value="2"> 
+                    Replace to: <input type="text" value="@"> 
+                    <button>replaceAt !</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+                <article >
+                    <h3>String.prototype.indexes</h3>
+                    <code>
+                        array indexes ( string find )
+                    </code>
+                    <p>
+                        Description: Find and returns all indexes of given param "find".
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        string find: the string to find all occurences indexes in string.
+                    </code>
+                    <h4>Examples:</h4>
+                    Write a String: <input type="text" value="Banana, Mamão, Maçã"> 
+                    Find: <input type="text" value="a"> 
+                    <button>indexes !</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+                <article >
+                    <h3>String.prototype.removeAccents</h3>
+                    <code>
+                        string indexes ( void )
+                    </code>
+                    <p>
+                        Description: Remove all string accents
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        none
+                    </code>
+                    <h4>Examples:</h4>
+                    Write a String: <input type="text" value="João está na roça com um índio"> 
+                    <button>removeAccents !</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+                <article >
+                    <h3>String.prototype.has</h3>
+                    <code>
+                        string has ( string str )
+                    </code>
+                    <p>
+                        Description: Verifies ir the string has the "str" in the argument
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        string str: "str" is the param string to find
+                    </code>
+                    <h4>Returns</h4>
+                    <code>
+                        boolean: true if finds, false otherwise
+                    </code>
+                    <h4>Examples:</h4>
+                    Write a String: <input type="text" value="Alohomora!"> 
+                    The string has: <input type="text" value="h"> ??? 
+                    <button>has ?</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+            </main>
         </section>
-        <footer>
-            
-        </footer>
-        <script type="text/javascript" src="people.js"></script>
-		<script type="text/javascript" src="testExample.js"></script>
-	</body>
+        <script type="text/javascript" src="../people.js"></script>
+        <script type="text/javascript" src="testExample.js"></script>
+    </body>
 </html>

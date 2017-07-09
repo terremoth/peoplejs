@@ -1,9 +1,8 @@
 
 var exampleString = 'João Melão';
-var exampleNumber = 123.45;
+var exampleNumber = 123.456;
 var exampleArray1 = ['Banana', 'Maçã', 'Uva', 'Morango'];
-var exampleArray2 = [10];
-var exampleArray3 = [];
+var exampleArray2 = Randomic.arrayInt();
 var date = new Date();
 
 var Person = {};
