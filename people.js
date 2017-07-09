@@ -106,6 +106,22 @@ Array.prototype.odd = function(order) {
     return this.prototype.__oddEven('odd', order);
 };
 
+function randomArrayInt(minSize, maxSize, minInt, maxInt) {
+    minSize = minSize || 5;
+    maxSize = maxSize || 10;
+    
+    minInt = minInt || 0;
+    maxInt = maxInt || 100;
+    
+    var arr = [], i;
+    var randomSize = intRandom(minSize, maxSize);
+    
+    for(i = 0; i < randomSize; i++) {
+        arr.push(intRandom(minInt, maxInt));
+    }
+    return arr;
+};
+
 Array.prototype.even = function(order) {
     return this.prototype.__oddEven('even', order);
 };
@@ -200,7 +216,7 @@ Number.prototype.toRoman = function() {
     return numberToRoman(this);
 };
 
-function randomString(len) {
+function stringRandom(len) {
     var rdmString = "";
     for( ; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
     return rdmString.substr(0, len);

@@ -34,12 +34,16 @@ aside {
     position: static;
 }
 section {
-    float: left;
-    width: calc(100vw - 600px);
     height: calc(100vh - 80px);
     overflow-y: auto;
+    background-color: #eee;
 }
 
 section > h2 {
     margin: 10px 0 0 10px;
+}
+
+.spacer {
+    margin-left: 30px;
+    margin-top: 30px;
 }
