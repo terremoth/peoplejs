@@ -3,12 +3,14 @@
     <head>
         <title>PeopleJS - Made by people, for people! - Free Software</title>
         <meta charset="UTF-8">
+        <meta name="co-Author" content="Lucas M. Dutra - dutra.astro@gmail.com | github.com/terremoth">
         <link rel="stylesheet" href="style.css">
+        <!-- For a While, this is just one page documentation, for first releases. One-Page rulezzz! -->
     </head>
     <body>
         <header>
             <h1>PeopleJS - The People JavaScript Library</h1>
-            <h6>Made by people, for people! - Free Software</h6>
+            <h6>Made by people, for people! - Free Software (libre). Licensed under GPL v3. <a href="../people.js">> Download <</a></h6>
         </header>
         <aside>
             <h4>Functions</h4>
@@ -138,6 +140,8 @@
                     <li><a href="#">Randomic.arrayFloat</a></li>
                     <li><a href="#">Randomic.arrayString</a></li>
                     <li><a href="#">Randomic.mix</a></li>
+                    <li><a href="#">isBool</a></li>
+                    <li><a href="#">isObj</a></li>
                 </ul>
             </nav>
         </aside>
@@ -229,6 +233,178 @@
                     Write a String: <input type="text" value="Alohomora!"> 
                     The string has: <input type="text" value="h"> ??? 
                     <button>has ?</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+                <article >
+                    <h3>String.prototype.beginsWith</h3>
+                    <code>
+                        boolean beginsWith ( string item )
+                    </code>
+                    <p>
+                        Description: Verifies ir the string with "item" argument
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        string item: item/string to be verified at the beginning of the prototyped string
+                    </code>
+                    <h4>Returns</h4>
+                    <code>
+                        boolean: true if begins with "item" param, false otherwise
+                    </code>
+                    <h4>Examples:</h4>
+                    Write a String: <input type="text" value="Arnold"> 
+                    begins with: <input type="text" value="Arn"> ?
+                    <button>check if begins</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+                <article >
+                    <h3>Array.prototype.last</h3>
+                    <code>
+                        mixed last ( void )
+                    </code>
+                    <p>
+                        Description: Returns last item of array
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        none
+                    </code>
+                    <h4>Returns</h4>
+                    <code>
+                        mixed: last array item 
+                    </code>
+                    <h4>Examples:</h4>
+                    Array: <var>[]</var> 
+                    <button>.last()</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+                <article >
+                    <h3>Array.prototype.randomItem</h3>
+                    <code>
+                        mixed randomItem ( void )
+                    </code>
+                    <p>
+                        Description: gets a random item from the array
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        none
+                    </code>
+                    <h4>Returns</h4>
+                    <code>
+                        mixed: some array item 
+                    </code>
+                    <h4>Examples:</h4>
+                    Array: <var>[]</var> 
+                    <button>.randomItem()</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+                <article >
+                    <h3>Array.prototype.shuffle</h3>
+                    <code>
+                        array shuffle ( void )
+                    </code>
+                    <p>
+                        Description: shuffle the array items
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        none
+                    </code>
+                    <h4>Returns</h4>
+                    <code>
+                        array: the shuffled array result
+                    </code>
+                    <h4>Examples:</h4>
+                    Array: <var>[]</var> 
+                    <button>.shuffle()</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+                <article >
+                    <h3>Array.prototype.trunc</h3>
+                    <code>
+                        array trunc ( n )
+                    </code>
+                    <p>
+                        Description: truncates array to let it with the size of "n"
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        int n: number of the array final size  
+                    </code>
+                    <h4>Returns</h4>
+                    <code>
+                        array: truncated array
+                    </code>
+                    <h4>Examples:</h4>
+                    Array: <var>[]</var> 
+                    Truncate array to let it with size: <input type="number" value="3">
+                    <button>.trunc()</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+                <article >
+                    <h3>Array.prototype.has</h3>
+                    <code>
+                        array has ( item )
+                    </code>
+                    <p>
+                        Description: verifies if the array has the item passed by param
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        mixed item: the item to find if has inside array
+                    </code>
+                    <h4>Returns</h4>
+                    <code>
+                        boolean: true if finds, false otherwise
+                    </code>
+                    <h4>Examples:</h4>
+                    Verify if array has item: 
+                    Array: <var>[]</var>.has(<input type="text" value="5">) ? 
+                    <button>.has()</button>
+                    <output>
+                        Output: 
+                    </output>
+                </article>
+                <hr>
+                <article >
+                    <h3>Array.prototype.remove</h3>
+                    <code>
+                        array remove ( args )
+                    </code>
+                    <p>
+                        Description: Removes all items in array passed by args 
+                    </p>
+                    <h4>Params</h4>
+                    <code>
+                        mixed ...args: args you can pass to be removed from array
+                    </code>
+                    <h4>Returns</h4>
+                    <code>
+                        array: array without the items passed by args
+                    </code>
+                    <h4>Examples:</h4>
+                    Write the items in the input separated by comma to remove from array: <br> 
+                    Array: <var>[]</var>.remove(<input type="text" value="">) 
+                    <button>.remove()</button>
                     <output>
                         Output: 
                     </output>

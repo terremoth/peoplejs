@@ -57,3 +57,11 @@ output {
     background-color: lightgrey;
     border: 1px dashed grey;
 }
+
+header > h6 > a {
+    color: #2598f9;
+}
+
+header > h6 > a:visited {
+    color: #00ffff;
+}
