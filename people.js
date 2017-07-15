@@ -9,6 +9,15 @@
 var ___CACHE = []; 
 
 constant('PEOPLEJS_VERSION', "1.0.0"); 
+constant("_1s", 1000);
+constant("_1i", "60  * _1s", true);
+constant("_5i", "5   * _1i", true);
+constant("_1h", "60  * _1i", true);
+constant("_1d", "24  * _1h", true);
+constant("_1w", "7   * _1d", true);
+constant("_1m", "30  * _1w", true);
+constant("_6m", "6   * _1m", true);
+constant("_1y", "365 * _1d", true);
 
 var Randomic = {};
     Randomic.int = function(min ,max) {
@@ -65,10 +74,18 @@ var Randomic = {};
         }
         return arr;
     };
+    Randomic.dice = function(maxSize) {
+        maxSize = maxSize || 6;
+        return Randomic.int(1, maxSize);
+    };
 // End of Randomic Object
 
 String.prototype.replaceAt = function(index, str) {
 	return this.substr(0, index) + str + this.substr(index + str.length);
+};
+
+String.prototype.insertAt = function( index, value ) {
+    return (this.slice(0,index) + value + this.slice(index));
 };
 
 String.prototype.indexes = function(find) {
@@ -102,6 +119,17 @@ String.prototype.has = function(str) {
 
 String.prototype.beginsWith = function(str) {
     return this.lastIndexOf(str, 0) === 0;
+};
+
+String.prototype.trunc = function(n) {
+    return this.substring(0, n);
+};
+
+Array.prototype.first = function() {
+    if(this[0]) {
+        return this[0];
+    }   
+    return false;
 };
 
 Array.prototype.last = function() {
@@ -578,7 +606,7 @@ function objToParams(obj){
 }
 
 function blockSelection() {
-    document.selection.empty();
+    //document.selection.empty();
     window.getSelection().removeAllRanges();
     document.body.innerHTML += '\
         <style>*{\n\
@@ -731,7 +759,12 @@ function ajax(params, callback) {
     
     ajax.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            return callback(this.responseText);
+            if (typeof callback === 'function') {
+                callback(this.responseText);
+            } else {
+                ___CACHE.push(this.responseText);
+            }
+            return true;
         }
     };
     var method = ajaxParams.method.toLowerCase();
@@ -860,12 +893,90 @@ function blink(selector, speed) {
     });
 }
 
-constant("_1s", 1000);
-constant("_1i", "60  * _1s", true);
-constant("_5i", "5   * _1i", true);
-constant("_1h", "60  * _1i", true);
-constant("_1d", "24  * _1h", true);
-constant("_1w", "7   * _1d", true);
-constant("_1m", "30  * _1w", true);
-constant("_6m", "6   * _1m", true);
-constant("_1y", "365 * _1d", true);
+function isNumericDigit(evt) {
+    return (evt.keyCode >= 48 && evt.keyCode <= 57) 
+        || (evt.keyCode >= 96 && evt.keyCode <= 105);
+}
+
+function dateDiffInDays(firstDateObj, lastDateObj) {
+  var msPerDay = eval("_1d");
+  var firstUtcDate = Date.UTC(firstDateObj.getFullYear(), firstDateObj.getMonth(), firstDateObj.getDate());
+  var lastUtcDate  = Date.UTC(lastDateObj.getFullYear(),  lastDateObj.getMonth(),   lastDateObj.getDate());
+
+  return Math.floor((lastUtcDate - firstUtcDate) / msPerDay);
+}
+
+function inputMask(mask, elem, evt) {
+    var arrMask = mask.split('');
+    // # for necessary numbers
+    // 
+    elem.addEventListener('keydown', function() {
+        
+    });
+}
+
+function isNode(obj){
+    return (
+        typeof Node === "object" ? obj instanceof Node : 
+        obj && typeof obj === "object" && typeof obj.nodeType === "number" && typeof obj.nodeName==="string"
+    );
+}
+
+function isElement(obj){
+    return (
+        typeof HTMLElement === "object" ? obj instanceof HTMLElement : //DOM2
+        obj && typeof obj === "object" && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === "string"
+    );
+}
+
+function isHidden(el) {
+    var style = window.getComputedStyle(el);
+    return (el.offsetParent === null || style.display === 'none');
+}
+
+function isObj(obj) {
+    return typeof obj === 'object';
+}
+
+function isBool(item) {
+    return typeof item === 'boolean';
+}
+
+function isStr(item) {
+    return typeof item === 'string';
+}
+
+
+function escapeHtml(string) {
+    var entityMap = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+      '/': '&#x2F;',
+      '`': '&#x60;',
+      '=': '&#x3D;'
+    };
+    
+    return String(string).replace(/[&<>"'`=\/]/g, function(str) {
+        return entityMap[str];
+    });
+}
+
+function isIpv4(ip) {
+    var str = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(ip);
+  //var str = /^(?:(?:25[0-5]2[0-4][0-9][01]?[0-9][0-9]?)\.){3}(?:25[0-5]2[0-4][0-9][01]?[0-9][0-9]?)$/.test(ip);
+    return str;
+}
+
+function isIpv6(ip) {
+    var str = /^s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:)))(%.+)?s*(\/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))?$/.test(ip);
+    return str;
+}
+
+function cursor(mode) {
+    mode = mode || 'default';
+    document.body.style.cursor = mode;
+}
+
