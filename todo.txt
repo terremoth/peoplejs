@@ -1,0 +1,3 @@
+functions
+
+isIp, cursor (with url link support)
