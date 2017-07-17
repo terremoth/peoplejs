@@ -374,8 +374,9 @@ function constant(name, value, evalValue) {
     if (evalValue === true) {
         value = eval(value);
     }
+    var local = typeof global === "object" ? global : window;
     
-	Object.defineProperty(typeof global === "object" ? global : window, name, {
+	Object.defineProperty(local, name, {
 		value: value,
 		enumerable: true,
 		writable: false,
@@ -580,7 +581,6 @@ function microtime() {
     return (Math.round((now - s) * 1000) / 1000) + ' ' + s;
 }
 
-
 function isMobile() { 
     if(navigator.userAgent.match(/Android/i)
     || navigator.userAgent.match(/webOS/i)
@@ -663,8 +663,8 @@ function moneyToFloat(str, toFixed) {
     return parseFloat(floatNumber.toFixed(toFixed));
 }
 
-/* needs more refactoring */
 function serializeForm(form) {
+    /* needs more refactoring */
     if (!form || form.nodeName !== "FORM") {
       return false;
     }
@@ -732,13 +732,6 @@ function serializeJson(json) {
 function isValid(x) {
     return (x === 0 ? true : !!x);
 }
-
-/* TO-DO */
-function peopleMask(){
-    var toMask = document.querySelectorAll('input[data-mask]');
-        toMask.addEventListener();
-}
-
 
 function ajax(params, callback) {
     params = params || {};
@@ -835,7 +828,6 @@ function browserPlugins() {
     };
     return plugins;
 }
-
 
 function getIp(selector) {
     selector = selector || false;
@@ -946,7 +938,6 @@ function isStr(item) {
     return typeof item === 'string';
 }
 
-
 function escapeHtml(string) {
     var entityMap = {
       '&': '&amp;',
@@ -975,8 +966,58 @@ function isIpv6(ip) {
     return str;
 }
 
+function log10(val) {
+  return Math.log(val) / Math.LN10;
+}
+
+function fact(x) {
+    if (!x) return 1;
+    return x * fact(x-1);
+}
+
 function cursor(mode) {
     mode = mode || 'default';
     document.body.style.cursor = mode;
 }
+
+function strToBin(str, sep) {
+    var output = ''; 
+    sep = sep || '';
+    
+    for (var i = 0; i < str.length; i++) {
+        output += str[i].charCodeAt(0).toString(2) + sep;
+    }
+    return output;
+}
+
+function strToHex(str, sep) {
+    var output = ''; 
+    sep = sep || ' ';
+    
+    for (var i = 0; i < str.length; i++) {
+        output += str[i].charCodeAt(0).toString(16) + sep;
+    }
+    return output;
+}
+
+function strToOct(str, sep) {
+    var output = ''; 
+    sep = sep || '';
+    
+    for (var i = 0; i < str.length; i++) {
+        output += str[i].charCodeAt(0).toString(8) + sep;
+    }
+    return output;
+}
+
+function hexToStr(str){
+    var j;
+    var hexes = str.match(/.{1,4}/g) || [];
+    var back = '';
+    for(j = 0; j<hexes.length; j++) {
+        back += String.fromCharCode(parseInt(hexes[j], 16));
+    }
+
+    return back;
+};
 

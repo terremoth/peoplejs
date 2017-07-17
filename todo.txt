@@ -1,3 +1,89 @@
 functions
 
-isIp, cursor (with url link support)
+/* TO-DO*/
+function md5(message) {
+    
+    var r = [], k = [], i, h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, message = message || '';
+    
+    for (i=0;  i < 16; i++) r[i] = [7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22];
+    for (i=16; i < 32; i++) r[i] = [5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20];
+    for (i=32; i < 48; i++) r[i] = [4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23];
+    for (i=48; i < 64; i++) r[i] = [6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21];
+    for (i=0;  i < 64; i++) k[i] = Math.floor(Math.abs(Math.sin(i + 1)) * Math.pow(2,32));
+    
+    /*
+    append "1" bit to message
+    append "0" bits until message length in bits ≡ 448 (mod 512)
+    append bit length of message as 64-bit little-endian integer to message
+     */
+    /* try it */
+    
+    function chunckMessage512(message) {} 
+    
+    function chunckWords16(words) {}
+    
+    function leftRotate(x, c) {
+        return (x << c) | (x >> (32 - c));
+    }
+    
+    chunckMessage512(message).forEach(function(item) {
+        var w = chunckWords16(item);
+        
+        var a = h0;
+        var b = h1;
+        var c = h2;
+        var d = h3;
+        var f;
+        var g;
+        
+        for (i=0; i<63; i++) {
+            if (i >= 0 || i <= 15) {
+                f = (b & c) | ((~b) & d);
+                g = i;
+            }
+            else if (i >= 16 || i <= 31) {
+                f = (d & b) | ((~d) & c);
+                g = (5*i + 1) % 16;
+            }
+            else if (32 <= i || i <= 47) {
+                f = b ^ c ^ d;
+                g = (3*i + 5) % 16;
+            }
+            else if (48 <= i || i <= 63) {
+                f = c ^ (b | (~d));
+                g = (7*i) % 16;
+            }
+
+            //var temp = d,
+            //d = c,
+            //c = b,
+            //b = ((a + f + k[i] + w(g)) leftrotate r[i]) + b,
+            //a = temp;
+            f = f + a + k[i] + w[g];
+            a = d;
+            d = c;
+            c = b;
+            b = b + leftRotate(f, r[i]);
+        }
+        
+        h0 = h0 + a;
+        h1 = h1 + b; 
+        h2 = h2 + c;
+        h3 = h3 + d;
+    });
+    
+
+    var digest = h0.concat(h1).concat(h2).concat(h3); //(expressed as little-endian)
+}
+
+
+function peopleMask(){
+    var toMask = document.querySelectorAll('input[data-mask]');
+        toMask.addEventListener();
+}
+
+function passwordStrength(id) {
+    var level = 0;
+    var pass = document.getElementById(id).value;
+}
+
