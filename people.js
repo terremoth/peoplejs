@@ -110,6 +110,7 @@ String.prototype.removeAccents = function() {
                 .replace(/[úùüû]/gi,  "u")
                 .replace(/[ç]/gi,     "c")
                 .replace(/[ñ]/gi,     "n")
+                .replace(/[ÿý]/gi,    "y")
                 .replace(/[^a-zA-Z0-9]/g, " ");
 };
 
@@ -157,6 +158,29 @@ Array.prototype.has = function(item) {
 
 Array.prototype.desc = function() { 
     return this.sort(function(a, b){return b-a;}); 
+};
+
+Array.prototype.average = function() { 
+    var len = this.length || 1;
+    var sum = 0;
+    this.forEach(function(item) {
+        switch(typeof item) {
+            case 'number':
+            sum += parseFloat(item);
+                break;
+            case 'string':
+                var n = parseFloat(item);
+                isNumber(n) ? sum += item : '';
+                break;
+            case 'boolean':
+                item === true ? sum += 1 : '';
+                break;
+            case 'object':
+                isArray(item) ? sum += item.average() : '';
+                break;
+        }
+    });
+    return sum/len;
 };
 
 Array.prototype.__oddEven = function(type, order) {
@@ -408,13 +432,18 @@ function setFullScreen() {
 	rfs.call(doc);
 }
 
-function ss(scriptPath, callback) {
-	var scriptHead = document.createElement('script'); 
-	scriptHead.type = 'text/javascript';
-	scriptHead.src = scriptPath;
-	document.head.appendChild(scriptHead);
+function ss(scriptPath, callback, insertBody) {
+    insertBody = insertBody || true;
+	var script = document.createElement('script'); 
+	script.type = 'text/javascript';
+	script.src = scriptPath;
+    if (insertBody) {
+        document.body.appendChild(script);
+    } else {
+        document.head.appendChild(script);
+    }
     
-	scriptHead.onload = function() {
+	script.onload = function() {
 		callback();
 	};
 }
@@ -581,14 +610,18 @@ function microtime() {
     return (Math.round((now - s) * 1000) / 1000) + ' ' + s;
 }
 
-function isMobile() { 
-    if(navigator.userAgent.match(/Android/i)
-    || navigator.userAgent.match(/webOS/i)
-    || navigator.userAgent.match(/iPhone/i)
-    || navigator.userAgent.match(/iPad/i)
-    || navigator.userAgent.match(/iPod/i)
-    || navigator.userAgent.match(/BlackBerry/i)
-    || navigator.userAgent.match(/Windows Phone/i)
+function isMobile() {
+    function ua(ag) {
+        return navigator.userAgent.match(ag);
+    }
+    
+    if(ua(/Android/i)
+    || ua(/webOS/i)
+    || ua(/iPhone/i)
+    || ua(/iPad/i)
+    || ua(/iPod/i)
+    || ua(/BlackBerry/i)
+    || ua(/Windows Phone/i)
     ){
         return true;
     } else {
@@ -835,7 +868,7 @@ function getIp(selector) {
         url: "http://api.ipify.org/"
     }, function(data) {
         if (selector) {
-            document.querySelectorAll(selector).forEach(function(item) {
+            qsa(selector).forEach(function(item) {
                 item.innerHTML += data;
             });
         } else {
@@ -859,7 +892,7 @@ function getCurrency(selector, symbol, base) {
         }
         
         if (selector) {
-            document.querySelectorAll(selector).forEach(function(item) {
+            qsa(selector).forEach(function(item) {
                 item.innerHTML += data;
             });
         } else {
@@ -871,7 +904,7 @@ function getCurrency(selector, symbol, base) {
 function blink(selector, speed) {
     selector = selector || 'blink';
     speed = speed || 500;
-    var elements = document.querySelectorAll(selector);
+    var elements = qsa(selector);
     
     elements.forEach(function(item){
         var el = item; 
@@ -896,15 +929,6 @@ function dateDiffInDays(firstDateObj, lastDateObj) {
   var lastUtcDate  = Date.UTC(lastDateObj.getFullYear(),  lastDateObj.getMonth(),   lastDateObj.getDate());
 
   return Math.floor((lastUtcDate - firstUtcDate) / msPerDay);
-}
-
-function inputMask(mask, elem, evt) {
-    var arrMask = mask.split('');
-    // # for necessary numbers
-    // 
-    elem.addEventListener('keydown', function() {
-        
-    });
 }
 
 function isNode(obj){
@@ -992,7 +1016,7 @@ function strToBin(str, sep) {
 
 function strToHex(str, sep) {
     var output = ''; 
-    sep = sep || ' ';
+    sep = sep || '';
     
     for (var i = 0; i < str.length; i++) {
         output += str[i].charCodeAt(0).toString(16) + sep;
@@ -1021,3 +1045,29 @@ function hexToStr(str){
     return back;
 };
 
+function reverse(item) {
+    function r(x){return x.split('').reverse().join('');}
+    
+    if (isArray(item)) {
+        return item.reverse();
+    } else if (isStr(item)) {
+        return r(item);
+    } else if (isBool(item)) {
+        return !item;
+    } else if (isNumber(item)) {
+        item = item.toString();
+        return parseFloat(r(item));
+    }
+    return false;
+}
+
+function qsa(item) {
+    return document.querySelectorAll(item);
+}
+
+function Fakery(formId){
+    this.form = qsa('#'+formId)[0];
+    Fakery.prototype.getForm = function() {
+        return this.form;
+    };
+}
