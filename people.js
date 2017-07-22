@@ -183,6 +183,12 @@ Array.prototype.average = function() {
     return sum/len;
 };
 
+Array.prototype.sum = function() {
+    return this.reduce(function(x,y) {
+        return x+y;
+    });
+};
+
 Array.prototype.__oddEven = function(type, order) {
     var oddEven = [];
     order = order || false;
@@ -1035,15 +1041,24 @@ function strToOct(str, sep) {
 }
 
 function hexToStr(str){
-    var j;
-    var hexes = str.match(/.{1,4}/g) || [];
-    var back = '';
+    var j, hexes = str.match(/.{1,4}/g) || [], back = '';
     for(j = 0; j<hexes.length; j++) {
         back += String.fromCharCode(parseInt(hexes[j], 16));
     }
 
     return back;
 };
+
+function binToStr(str) {
+    var arr = str.split(" ");
+    var finalStr;
+
+    for (var i=0; i<arr.length; i++) {
+        finalStr += String.fromCharCode((parseInt(arr[i], 2)));
+    }
+
+    return finalStr;
+}
 
 function reverse(item) {
     function r(x){return x.split('').reverse().join('');}
@@ -1070,4 +1085,8 @@ function Fakery(formId){
     Fakery.prototype.getForm = function() {
         return this.form;
     };
+}
+
+function baseConverter(strTxt, from, to, separator) {
+    
 }
