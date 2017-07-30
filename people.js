@@ -101,24 +101,72 @@ String.prototype.indexes = function(find) {
 	return matches;
 };
 
+String.prototype.replaceArray = function(find, replace, regexFlag) {
+    var replaceString = this;
+    var regex; 
+        regexFlag = regexFlag || 'g';
+        
+    for (var i = 0; i < find.length; i++) {
+        regex = new RegExp(find[i], regexFlag);
+        replaceString = replaceString.replace(regex, replace[i]);
+    }
+    
+    return replaceString;
+};
+
 String.prototype.removeAccents = function() {
-        return this
-                .replace(/[áàãâä]/gi, "a")
-                .replace(/[éè¨ê]/gi,  "e")
-                .replace(/[íìïî]/gi,  "i")
-                .replace(/[óòöôõ]/gi, "o")
-                .replace(/[úùüû]/gi,  "u")
-                .replace(/[ç]/gi,     "c")
-                .replace(/[ñ]/gi,     "n")
-                .replace(/[ÿý]/gi,    "y")
-                .replace(/[^a-zA-Z0-9]/g, " ");
+    var dirtyStr = ['áàãâäąå','éèëêẽę','íìïîĩ','óòöôõø','úùüûũǘŭ','çḉćĉ','ďđ','ł','ñńǹ','ṕ','šśŝ','ṽ','ÿýỳŷỹ','žźẑż'],
+        cleanStr = ['a','e','i','o','u','c','d','l','n','p','s','v','y','z'],
+        regexStr = [];
+        
+    dirtyStr.forEach(function(item) {
+        regexStr.push('/['+item+']/');
+    });
+    
+    return this.replaceArray(regexStr, cleanStr);
+    
+    //return this.replace(/[^a-zA-Z0-9]/g, " ");
+};
+
+String.prototype.removeSpecialChars = function() {
+    
+    return this
+            .replace(/[ª]/gi,     "a")
+            .replace(/[º]/gi,     "o")
+            .replace(/[&]/gi,     "e")
+            .replace(/[@]/gi,     "(at)")
+            .replace(/[¹]/gi,     "1")
+            .replace(/[²]/gi,     "2")
+            .replace(/[³]/gi,     "3")
+            .replace(/[œ]/g,      "oe")
+            .replace(/[Œ]/g,      "OE")
+            .replace(/[ƒ]/gi,     "f")
+            .replace(/[™]/gi,     "TM")
+            .replace(/[Æ]/g,      "AE")
+            .replace(/[¦]/gi,     "|")
+            .replace(/[©]/gi,     "(c)")
+            .replace(/[®]/gi,     "(R)")
+            .replace(/[«]/gi,     "<<")
+            .replace(/[»]/gi,     ">>")
+            .replace(/[›]/gi,      ">")
+            .replace(/[—–¯]/gi,   "-")
+            .replace(/[±]/gi,     "+-")
+            .replace(/[˜]/gi,     "~")
+            .replace(/[“”]/gi,    '"')
+            .replace(/[µ]/g,      'm')
+            .replace(/[½]/g,      '1/2')
+            .replace(/[¼]/g,      '1/4')
+            .replace(/[¾]/g,      '3/4')
+            .replace(/[ð]/g,      'eth')
+            .replace(/[÷]/g,      '/')
+            .replace(/[°]/gi,     "grade(s)");
 };
 
 String.prototype.has = function(str) { 
     return this.indexOf(str) !== -1; 
 };
 
-String.prototype.beginsWith = function(str) {
+String.prototype.startsWith = function(str) {
     return this.lastIndexOf(str, 0) === 0;
 };
 
@@ -996,14 +1044,33 @@ function isIpv6(ip) {
     return str;
 }
 
-function log10(val) {
+Math.log10 = function(val) {
   return Math.log(val) / Math.LN10;
-}
+};
 
-function fact(x) {
+Math.fact = function(x) {
     if (!x) return 1;
     return x * fact(x-1);
-}
+};
+
+Math.isPrime = function(num) {
+    for ( var i = 2; i < num; i++ ) {
+        if ( num % i === 0 ) {
+            return false;
+        }
+    }
+    return true;
+};
+
+Math.genPrimes = function(n) {
+    var primes = [2];
+    for (var i = 3; i < n; i+=2 ) {
+        if (Math.isPrime(i)) {
+            primes.push(i);
+        }
+    }
+    return primes;
+};
 
 function cursor(mode) {
     mode = mode || 'default';
