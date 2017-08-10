@@ -1,5 +1,7 @@
 functions
 
+Number.prototype.interval = function(n) {}
+
 /* TO-DO*/
 function md5(message) {
     
