@@ -211,6 +211,27 @@ Array.prototype.desc = function() {
     return this.sort(function(a, b){return b-a;}); 
 };
 
+Array.prototype.equals = function (array) {
+    if (!array) return false;
+    if (this.length !== array.length) return false;
+
+    for (var i = 0, l=this.length; i < l; i++) {
+        if (this[i] instanceof Array && array[i] instanceof Array) {
+            if (!this[i].equals(array[i]))
+                return false;       
+        }           
+        else if (this[i] !== array[i]) { 
+            return false;   
+        }           
+    }       
+    return true;
+    /*
+    var is_same = (array1.length == array2.length) && array1.every(function(element, index) {
+        return element === array2[index]; 
+    });
+    */
+};
+
 Array.prototype.average = function() { 
     var len = this.length || 1;
     var sum = 0;
@@ -364,6 +385,37 @@ Number.prototype.trunc = function(digits) {
 
 Number.prototype.toRoman = function() {
     return numberToRoman(this);
+};
+
+Number.prototype.between = function(x, y) {
+    return this > x && this < y;
+};
+
+Number.prototype.betweenEq = function(x, y) {
+    return this >= x && this <= y;
+};
+
+Number.prototype.rangeTo = function(n) {
+    var list = [], clone = this.valueOf();
+    
+    if(clone === n){return [n];};
+    
+    while(clone <= n) {
+        list.push(clone);
+        clone++;
+    }
+    
+    while (clone >= n) {
+        list.push(clone);
+        clone--;
+    }
+    
+    return list;
+};
+
+Number.prototype.absTo = function(n) {
+    var x = this.valueOf();
+    return Math.abs(x - n);
 };
 
 function objSize(obj) {
@@ -1150,9 +1202,9 @@ function qsa(item) {
     return document.querySelectorAll(item);
 }
 
-function Fakery(formId){
+function FormFiller(formId){
     this.form = qsa('#'+formId)[0];
-    Fakery.prototype.getForm = function() {
+    FormFiller.prototype.getForm = function() {
         return this.form;
     };
 }
@@ -1160,3 +1212,5 @@ function Fakery(formId){
 function baseConverter(strTxt, from, to, separator) {
     
 } 
+
+Object.defineProperty(Array.prototype, "equals", {enumerable: false});
