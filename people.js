@@ -114,9 +114,11 @@ String.prototype.replaceArray = function(find, replace, regexFlag) {
     return replaceString;
 };
 
-String.prototype.removeAccents = function() {
-    var dirtyStr = ['áàãâäąå','éèëêẽę','íìïîĩ','óòöôõø','úùüûũǘŭ','çḉćĉ','ďđ','ł','ñńǹ','ṕ','šśŝ','ṽ','ÿýỳŷỹ','žźẑż'],
-        cleanStr = ['a','e','i','o','u','c','d','l','n','p','s','v','y','z'],
+String.prototype.removeAccents = function() {       
+    var dirtyStr = ['áàãâäąåăæā','éèëêẽęēėęěĕə','íìïîĩīïįı','óòöôõøœőö','úùüûũǘŭųűůū',
+         'çḉćĉćč','ďđ','ģğ','ķ','ĺļľł','ñńǹņņ','ṕ','ŕř','šśŝśş','ťțţ','ṽ','ÿýỳŷỹ','žźẑż'],
+        
+        cleanStr = ['a','e','i','o','u','c','d','g','k','l','n','p','r','s','t','v','y','z'],
         regexStr = [];
         
     dirtyStr.forEach(function(item) {
@@ -159,6 +161,7 @@ String.prototype.removeSpecialChars = function() {
             .replace(/[¾]/g,      '3/4')
             .replace(/[ð]/g,      'eth')
             .replace(/[÷]/g,      '/')
+            .replace(/[¡]/g,      '!')  
             .replace(/[°]/gi,     "grade(s)");
 };
 
