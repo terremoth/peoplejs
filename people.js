@@ -1202,15 +1202,31 @@ function qsa(item) {
     return document.querySelectorAll(item);
 }
 
-function FormFiller(formId){
+function FormFiller(formId) {
+    
     this.form = qsa('#'+formId)[0];
+	this.formId = formId;
+	this.inputs = qsa('#'+formId+' input, #'+formId+' select, #'+formId+' textarea');
+            
     FormFiller.prototype.getForm = function() {
         return this.form;
     };
+    
+    FormFiller.prototype.inputs = function() {
+		return this.inputs;
+    };
+	
+	FormFiller.prototype.validate = function() {
+		this.form.reportValidity();
+		return this;
+	};
+    
+    return this;
 }
 
 function baseConverter(strTxt, from, to, separator) {
     
 } 
+ // TO-DO : FormFiller.zeroFill
 
 Object.defineProperty(Array.prototype, "equals", {enumerable: false});
