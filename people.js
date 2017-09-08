@@ -1202,6 +1202,16 @@ function qsa(item) {
     return document.querySelectorAll(item);
 }
 
+function isInput(selector) {
+    var query = qsa(selector);
+        if ( ! isEmpty(query) ) {
+            var elem = query[0].nodeName,
+                result = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].indexOf(elem);
+            return result !== -1;
+        }
+        return false;
+}
+
 function FormFiller(formId) {
     
     this.form = qsa('#'+formId)[0];
