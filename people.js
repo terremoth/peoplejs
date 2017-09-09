@@ -1234,9 +1234,33 @@ function FormFiller(formId) {
     return this;
 }
 
+function copyTextToClipboard(selector) {
+    var d = document, aux = d.createElement("input");
+    aux.setAttribute("value", qsa(selector)[0].innerHTML);
+    d.body.appendChild(aux);
+    aux.select();
+    d.execCommand("copy");
+    d.body.removeChild(aux);
+}
+
+function copyHtmlToClipboard(selector){
+    var d = document, aux = d.createElement("div");
+    aux.setAttribute("contentEditable", true);
+    aux.innerHTML = qsa(selector)[0].innerHTML;
+    aux.setAttribute("onfocus", "document.execCommand('selectAll',false,null)"); 
+    d.body.appendChild(aux);
+    aux.focus();
+    d.execCommand("copy");
+    d.body.removeChild(aux);
+}
+
 function baseConverter(strTxt, from, to, separator) {
     
 } 
+
+String.prototype.changeToBase = function(strTxt, from, to, separator) {
+    return baseConverter(strTxt, from, to, separator);
+};
  // TO-DO : FormFiller.zeroFill
 
 Object.defineProperty(Array.prototype, "equals", {enumerable: false});
