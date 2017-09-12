@@ -1,0 +1,18 @@
+# Project Bloat
+.npm-packages
+node_modules
+build/uglifyjs_cache
+build/dist
+test/unit/coverage
+test/e2e/reports
+dist
+
+# System bloat
+.DS_Store
+
+# Logs
+*.log
+
+# Optional npm cache directory
+.npm
+
