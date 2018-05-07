@@ -1264,6 +1264,18 @@ function palindrome(str) {
   return (halfFirst === halfSecond);
 }
 
+
+function findLongestWord(str) {
+  var longest = 0;
+  str.split(' ').map(function(s) {
+    if (s.length > longest) {
+      longest = s.length;
+    } 
+  });
+  
+  return longest;
+}
+
 function baseConverter(strTxt, from, to, separator) {
     
 } 
