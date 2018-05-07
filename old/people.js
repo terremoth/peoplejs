@@ -1277,9 +1277,14 @@ function findLongestWord(str) {
 }
 
 String.prototype.capitalise = function () {
-    return this.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-    	return letter.toUpperCase();
-	});
+
+  var sentence = '';
+    
+  this.toLowerCase().split(' ').map(function(word) {
+    sentence += ' ' + word[0].toUpperCase() + word.substring(1, word.length);
+  });
+  
+  return sentence.trim();
 }
 
 function baseConverter(strTxt, from, to, separator) {
