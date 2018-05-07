@@ -1254,6 +1254,16 @@ function copyHtmlToClipboard(selector){
     d.body.removeChild(aux);
 }
 
+function palindrome(str) {
+  
+  var cleanStr = str.replace(/[\W\_]/gi, '').toLowerCase();
+  var half  = parseInt((cleanStr.length / 2)); 
+  var halfFirst = cleanStr.substring(0, half);    
+  var halfSecond = cleanStr.slice(-half).split('').reverse().join('');   
+
+  return (halfFirst === halfSecond);
+}
+
 function baseConverter(strTxt, from, to, separator) {
     
 } 
