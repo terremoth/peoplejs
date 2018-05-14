@@ -377,6 +377,14 @@ Array.prototype.clear = function() {
     return this.length = 0;
 };
 
+Array.prototype.max = function(){
+    return Math.max.apply( Math, this);
+};
+
+Array.prototype.min = function(){
+    return Math.min.apply( Math, this );
+};
+
 Number.prototype.trunc = function(digits) {
     var n = this - Math.pow(10, -digits)/2;
     n += n / Math.pow(2, 53); 
