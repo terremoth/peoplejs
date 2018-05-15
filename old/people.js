@@ -88,6 +88,18 @@ String.prototype.insertAt = function( index, value ) {
     return (this.slice(0,index) + value + this.slice(index));
 };
 
+String.prototype.hasAllChars = function(xChars) { 
+    var hasAll = true;
+    var inThis = this;
+    var check =  xChars.toLowerCase().split('').map(function(char) {
+        if (inThis.toLowerCase().indexOf(char) === -1) {
+            hasAll = false;
+        }  
+    });
+  
+    return hasAll;
+};
+
 String.prototype.indexes = function(find) {
 
 	var regexp = new RegExp(find, 'g');
