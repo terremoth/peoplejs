@@ -1284,6 +1284,11 @@ function palindrome(str) {
   return (halfFirst === halfSecond);
 }
 
+function getEndPoint() {
+    var urlSplit = window.location.href.split('/');
+    urlSplit = urlSplit[urlSplit.length -1];
+    return urlSplit.replace(/((\?)|(\/)|(\#)).*/, '');
+}
 
 function findLongestWord(str) {
   var longest = 0;
