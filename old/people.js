@@ -223,6 +223,22 @@ Array.prototype.desc = function() {
     return this.sort(function(a, b){return b-a;}); 
 };
 
+Array.prototype.falsyRemover = function() {
+  
+ return this.filter(function(item) {
+   var cond = 
+           item !== false && 
+           item !== undefined &&
+           item !== null &&
+           item !== 0 &&
+           item !== "" &&
+       !Number.isNaN(item); 
+   
+   return cond;
+ });
+  return this;
+};
+
 Array.prototype.equals = function (array) {
     if (!array) return false;
     if (this.length !== array.length) return false;
