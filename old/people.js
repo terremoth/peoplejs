@@ -204,6 +204,18 @@ Array.prototype.randomItem = function() {
     return this[Math.floor(Math.random() * this.length)];
 };
 
+Array.prototype.chunk = function (size) {
+    var size = size || 2;  
+    var newArr = [];
+    var finalPart = this.length % size;
+  
+    for (var step = 0; step < this.length; step += size) {
+        newArr.push(this.slice(step, step+size));
+    }
+    
+    return newArr;
+};
+
 Array.prototype.shuffle = function() {
     this.sort(function() {  
         return Math.random() - 0.5;
