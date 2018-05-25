@@ -1357,4 +1357,17 @@ String.prototype.changeToBase = function(strTxt, from, to, separator) {
 };
  // TO-DO : FormFiller.zeroFill
 
+Object.prototype.renameKey = function(oldName, newName) {
+     if (oldName == newName) {
+         return this;
+     }
+    
+    if (this.hasOwnProperty(oldName)) {
+        this[newName] = this[oldName];
+        delete this[oldName];
+    }
+    
+    return this;
+};
+
 Object.defineProperty(Array.prototype, "equals", {enumerable: false});
