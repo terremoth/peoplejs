@@ -88,6 +88,12 @@ String.prototype.insertAt = function( index, value ) {
     return (this.slice(0,index) + value + this.slice(index));
 };
 
+String.prototype.shuffle = function() {
+    return this.split('').sort(function(){
+        return 0.5-Math.random();
+    }).join('');
+};
+
 String.prototype.hasAllChars = function(xChars) { 
     var hasAll = true;
     var inThis = this;
