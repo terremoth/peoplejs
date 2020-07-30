@@ -740,29 +740,11 @@ function objToParams(obj){
         .join("&");
 }
 
-function blockSelection() {
-    //document.selection.empty();
-    window.getSelection().removeAllRanges();
-    document.body.innerHTML += '\
-        <style>*{\n\
-            -webkit-touch-callout: none;\n\
-            -webkit-user-select: none;-khtml-user-select:none;\n\
-            -moz-user-select: none;\n\
-            -ms-user-select: none;\n\
-            user-select: none}\n\
-        </style>';
-}
 
 function goUrl(url) {
     window.location.href = url;
 }
 
-function blockRightClick() {
-    document.addEventListener('contextmenu', function(e){
-        e.preventDefault();
-        return false;
-    },false);
-}
 
 function toMoney(num, mil, dec, front, back) {
 
