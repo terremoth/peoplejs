@@ -648,46 +648,6 @@ function objToParams(obj){
         .join("&");
 }
 
-
-function goUrl(url) {
-    window.location.href = url;
-}
-
-
-function toMoney(num, mil, dec, front, back) {
-
-	mil   = mil   || '.';
-	dec   = dec   || ',';
-	front = front || '';
-	back  = back  || '';
-
-	num = (typeof num === 'string') ? parseFloat(num) : num;
-
-	return front.toString() + num.toFixed(2).replace('.', dec).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + mil) + back.toString();
-}
-
-function moneyToFloat(str, toFixed) {
-	var lastCharPos = false, floatNumber = 0;
-
-	var searchDot   = str.lastIndexOf('.');
-	var searchComma = str.lastIndexOf(',');
-
-	if (searchDot > searchComma) {
-		lastCharPos = searchDot;
-	} else if (searchDot < searchComma) {
-		lastCharPos = searchComma;
-	}
-
-    str = str.replaceAt(lastCharPos, 'F');
-    str = str.replace(/[\W]/g, '');
-    lastCharPos = str.indexOf('F');
-    str = str.replaceAt(lastCharPos, '.');
-    str = str.replace(/[a-zA-Z]/g, '');
-    floatNumber = parseFloat(str);
-    toFixed = toFixed || floatNumber.toString().length;
-    return parseFloat(floatNumber.toFixed(toFixed));
-}
-
 function serializeForm(form) {
     /* needs more refactoring */
     if (!form || form.nodeName !== "FORM") {
