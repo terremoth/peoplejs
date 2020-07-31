@@ -107,9 +107,6 @@ String.prototype.has = function(str) {
     return this.indexOf(str) !== -1; 
 };
 
-String.prototype.startsWith = function(str) {
-    return this.lastIndexOf(str, 0) === 0;
-};
 
 String.prototype.trunc = function(n) {
     return this.substring(0, n);
@@ -884,34 +881,6 @@ function isIpv6(ip) {
     return str;
 }
 
-Math.log10 = function(val) {
-  return Math.log(val) / Math.LN10;
-};
-
-Math.fact = function(x) {
-    if (!x) return 1;
-    return x * fact(x-1);
-};
-
-Math.isPrime = function(num) {
-    for ( var i = 2; i < num; i++ ) {
-        if ( num % i === 0 ) {
-            return false;
-        }
-    }
-    return true;
-};
-
-Math.genPrimes = function(n) {
-    var primes = [2];
-    for (var i = 3; i < n; i+=2 ) {
-        if (Math.isPrime(i)) {
-            primes.push(i);
-        }
-    }
-    return primes;
-};
-
 function strToBin(str, sep) {
     var output = ''; 
     sep = sep || '';
@@ -1099,4 +1068,3 @@ Object.prototype.renameKey = function(oldName, newName) {
     return this;
 };
 
-Object.defineProperty(Array.prototype, "equals", {enumerable: false});
