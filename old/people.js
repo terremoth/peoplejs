@@ -1,13 +1,4 @@
 constant('PEOPLEJS_VERSION', "1.0.0"); 
-constant("_1s", 1000);
-constant("_1i", "60  * _1s", true);
-constant("_5i", "5   * _1i", true);
-constant("_1h", "60  * _1i", true);
-constant("_1d", "24  * _1h", true);
-constant("_1w", "7   * _1d", true);
-constant("_1m", "30  * _1w", true);
-constant("_6m", "6   * _1m", true);
-constant("_1y", "365 * _1d", true);
 
 String.prototype.replaceAt = function(index, str) {
 	return this.substr(0, index) + str + this.substr(index + str.length);
@@ -632,12 +623,6 @@ function isURL(url) {
     }
 }
 
-function microtime() {
-    var s, now = (Date.now ? Date.now() : new Date().getTime()) / 1000;
-    s = now | 0;
-    return (Math.round((now - s) * 1000) / 1000) + ' ' + s;
-}
-
 function isMobile() {
     function ua(ag) {
         return navigator.userAgent.match(ag);
@@ -819,43 +804,18 @@ function getIp(selector) {
         url: "http://api.ipify.org/"
     }, function(data) {
         if (selector) {
-            qsa(selector).forEach(function(item) {
+            document.querySelectorAll(selector).forEach(function(item) {
                 item.innerHTML += data;
             });
-        } else {
-            ___CACHE.push(data);
         }
     });
 }
 
-function getCurrency(selector, symbol, base) {
-    selector = selector || false;
-    symbol = symbol || false;
-    base = base || "USD";
-    
-    ajax({
-        url: "http://api.fixer.io/latest?base="+base
-    }, function(data) {
-        data = JSON.parse(data);
-        
-        if (symbol){
-            data = data.rates[symbol];
-        }
-        
-        if (selector) {
-            qsa(selector).forEach(function(item) {
-                item.innerHTML += data;
-            });
-        } else {
-            ___CACHE.push(data);
-        }
-    });
-}
 
 function blink(selector, speed) {
     selector = selector || 'blink';
     speed = speed || 500;
-    var elements = qsa(selector);
+    var elements = document.querySelectorAll(selector);
     
     elements.forEach(function(item){
         var el = item; 
@@ -874,13 +834,7 @@ function isNumericDigit(evt) {
         || (evt.keyCode >= 96 && evt.keyCode <= 105);
 }
 
-function dateDiffInDays(firstDateObj, lastDateObj) {
-  var msPerDay = eval("_1d");
-  var firstUtcDate = Date.UTC(firstDateObj.getFullYear(), firstDateObj.getMonth(), firstDateObj.getDate());
-  var lastUtcDate  = Date.UTC(lastDateObj.getFullYear(),  lastDateObj.getMonth(),   lastDateObj.getDate());
 
-  return Math.floor((lastUtcDate - firstUtcDate) / msPerDay);
-}
 
 function isNode(obj){
     return (
@@ -1024,12 +978,9 @@ function reverse(item) {
     return false;
 }
 
-function qsa(item) {
-    return document.querySelectorAll(item);
-}
 
 function isInput(selector) {
-    var query = qsa(selector);
+    var query = document.querySelectorAll(selector);
         if ( ! isEmpty(query) ) {
             var elem = query[0].nodeName,
                 result = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].indexOf(elem);
@@ -1040,9 +991,9 @@ function isInput(selector) {
 
 function FormFiller(formId) {
     
-    this.form = qsa('#'+formId)[0];
+    this.form = document.querySelectorAll('#'+formId)[0];
 	this.formId = formId;
-	this.inputs = qsa('#'+formId+' input, #'+formId+' select, #'+formId+' textarea');
+	this.inputs = document.querySelectorAll('#'+formId+' input, #'+formId+' select, #'+formId+' textarea');
             
     FormFiller.prototype.getForm = function() {
         return this.form;
@@ -1062,7 +1013,7 @@ function FormFiller(formId) {
 
 function copyTextToClipboard(selector) {
     var d = document, aux = d.createElement("input");
-    aux.setAttribute("value", qsa(selector)[0].innerHTML);
+    aux.setAttribute("value", document.querySelectorAll(selector)[0].innerHTML);
     d.body.appendChild(aux);
     aux.select();
     d.execCommand("copy");
@@ -1072,7 +1023,7 @@ function copyTextToClipboard(selector) {
 function copyHtmlToClipboard(selector){
     var d = document, aux = d.createElement("div");
     aux.setAttribute("contentEditable", true);
-    aux.innerHTML = qsa(selector)[0].innerHTML;
+    aux.innerHTML = document.querySelectorAll(selector)[0].innerHTML;
     aux.setAttribute("onfocus", "document.execCommand('selectAll',false,null)"); 
     d.body.appendChild(aux);
     aux.focus();
