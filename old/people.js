@@ -1,13 +1,3 @@
-
-///* For Debug purposes, uncomment this line */ "use strict";
-
-/*
- * For PeopleJS use only.
- * Generally, will be used to store async results
- * # Only push to this array
- */
-var ___CACHE = []; 
-
 constant('PEOPLEJS_VERSION', "1.0.0"); 
 constant("_1s", 1000);
 constant("_1i", "60  * _1s", true);
@@ -778,13 +768,6 @@ function serializeForm(form) {
     return q.join("&");
 };
 
-function serializeJson(json) {
-    return objToParams(json);
-}
-
-function isValid(x) {
-    return (x === 0 ? true : !!x);
-}
 
 function bookmarkPage() {
     
@@ -918,17 +901,6 @@ function isHidden(el) {
     return (el.offsetParent === null || style.display === 'none');
 }
 
-function isObj(obj) {
-    return typeof obj === 'object';
-}
-
-function isBool(item) {
-    return typeof item === 'boolean';
-}
-
-function isStr(item) {
-    return typeof item === 'string';
-}
 
 function escapeHtml(string) {
     var entityMap = {
@@ -985,11 +957,6 @@ Math.genPrimes = function(n) {
     }
     return primes;
 };
-
-function cursor(mode) {
-    mode = mode || 'default';
-    document.body.style.cursor = mode;
-}
 
 function strToBin(str, sep) {
     var output = ''; 
