@@ -404,42 +404,6 @@ Number.prototype.absTo = function(n) {
     return Math.abs(x - n);
 };
 
-Object.prototype.renameKey = function(oldName, newName) {
-     if (oldName == newName) {
-         return this;
-     }
-    
-    if (this.hasOwnProperty(oldName)) {
-        this[newName] = this[oldName];
-        delete this[oldName];
-    }
-    
-    return this;
-};
-
-function objSize(obj) {
-	return Object.keys(obj).length;
-}
-
-function objEmpty(obj) {
-    return objSize(obj) === 0;
-}
-
-function objFunctions(obj) {
-    Object.getOwnPropertyNames(obj).filter(function (p) {
-        return typeof obj[p] === 'function';
-    });
-}
-
-function objToParams(obj){
-  return "?" + Object
-        .keys(obj)
-        .map(function(key){
-          return key+"="+obj[key];
-        })
-        .join("&");
-}
-
 function isArray(obj){
     return Object.prototype.toString.call(obj) === '[object Array]' ;
 }
@@ -458,28 +422,6 @@ function reverse(item) {
         return parseFloat(r(item));
     }
     return false;
-}
-
-function FormFiller(formId) {
-    
-    this.form = document.querySelectorAll('#'+formId)[0];
-	this.formId = formId;
-	this.inputs = document.querySelectorAll('#'+formId+' input, #'+formId+' select, #'+formId+' textarea');
-            
-    FormFiller.prototype.getForm = function() {
-        return this.form;
-    };
-    
-    FormFiller.prototype.inputs = function() {
-		return this.inputs;
-    };
-	
-	FormFiller.prototype.validate = function() {
-		this.form.reportValidity();
-		return this;
-	};
-    
-    return this;
 }
 
 function palindrome(str) {
